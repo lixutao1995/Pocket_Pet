@@ -15,6 +15,9 @@
 		7813FE5F219B8AB800FAF569 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7813FE5D219B8AB800FAF569 /* LaunchScreen.storyboard */; };
 		7813FE6A219B8AB800FAF569 /* Pocket_PetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE69219B8AB800FAF569 /* Pocket_PetTests.swift */; };
 		7813FE75219B8AB800FAF569 /* Pocket_PetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE74219B8AB800FAF569 /* Pocket_PetUITests.swift */; };
+		783B8B7A219E7C7700A9812B /* SpaceShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B79219E7C7700A9812B /* SpaceShip.swift */; };
+		783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */; };
+		789A800D21AB44360052A0CB /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789A800C21AB44360052A0CB /* Apple.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		7813FE70219B8AB800FAF569 /* Pocket_PetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Pocket_PetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7813FE74219B8AB800FAF569 /* Pocket_PetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pocket_PetUITests.swift; sourceTree = "<group>"; };
 		7813FE76219B8AB800FAF569 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		783B8B79219E7C7700A9812B /* SpaceShip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceShip.swift; sourceTree = "<group>"; };
+		783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrtyViewController.swift; sourceTree = "<group>"; };
+		789A800C21AB44360052A0CB /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,9 +109,12 @@
 				7813FE54219B8AB700FAF569 /* art.scnassets */,
 				7813FE56219B8AB700FAF569 /* ViewController.swift */,
 				7813FE58219B8AB700FAF569 /* Main.storyboard */,
+				783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */,
 				7813FE5B219B8AB800FAF569 /* Assets.xcassets */,
 				7813FE5D219B8AB800FAF569 /* LaunchScreen.storyboard */,
 				7813FE60219B8AB800FAF569 /* Info.plist */,
+				783B8B79219E7C7700A9812B /* SpaceShip.swift */,
+				789A800C21AB44360052A0CB /* Apple.swift */,
 			);
 			path = Pocket_Pet;
 			sourceTree = "<group>";
@@ -260,6 +269,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				789A800D21AB44360052A0CB /* Apple.swift in Sources */,
+				783B8B7A219E7C7700A9812B /* SpaceShip.swift in Sources */,
+				783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */,
 				7813FE57219B8AB700FAF569 /* ViewController.swift in Sources */,
 				7813FE53219B8AB700FAF569 /* AppDelegate.swift in Sources */,
 			);
@@ -439,6 +451,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YVWU3YH7P3;
 				INFOPLIST_FILE = Pocket_Pet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,6 +470,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = YVWU3YH7P3;
 				INFOPLIST_FILE = Pocket_Pet/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

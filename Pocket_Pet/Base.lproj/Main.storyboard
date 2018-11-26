@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jKB-8x-TEn">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Enrty View Controller-->
+        <scene sceneID="Tpo-q0-QW5">
+            <objects>
+                <viewController id="jKB-8x-TEn" customClass="EnrtyViewController" customModule="Pocket_Pet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZiL-gX-GIA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pocket Pet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vdY-xD-bj7">
+                                <rect key="frame" x="119" y="267" width="137" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BQB-I7-hXG">
+                                <rect key="frame" x="67" y="87" width="240" height="128"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B4d-Py-w73">
+                                <rect key="frame" x="130" y="615" width="115" height="32"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Tap to Continue">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="continueButtonClicked:" destination="jKB-8x-TEn" eventType="touchUpInside" id="yPN-AR-LkI"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.82057833830000004" green="1" blue="0.79553746260000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="6He-I5-jVe" firstAttribute="bottom" secondItem="B4d-Py-w73" secondAttribute="bottom" constant="20" id="HMC-cC-LVi"/>
+                            <constraint firstItem="vdY-xD-bj7" firstAttribute="centerX" secondItem="6He-I5-jVe" secondAttribute="centerX" id="HO0-dT-cqT"/>
+                            <constraint firstItem="BQB-I7-hXG" firstAttribute="top" secondItem="6He-I5-jVe" secondAttribute="top" constant="67" id="Ya3-h5-XZL"/>
+                            <constraint firstItem="vdY-xD-bj7" firstAttribute="top" secondItem="6He-I5-jVe" secondAttribute="bottom" multiplier="0.4" id="dFa-Sb-jeB"/>
+                            <constraint firstItem="B4d-Py-w73" firstAttribute="centerX" secondItem="6He-I5-jVe" secondAttribute="centerX" id="dzc-3d-Ynd"/>
+                            <constraint firstItem="BQB-I7-hXG" firstAttribute="centerX" secondItem="6He-I5-jVe" secondAttribute="centerX" id="kWG-As-GLQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6He-I5-jVe"/>
+                    </view>
+                    <connections>
+                        <outlet property="AppIcon" destination="BQB-I7-hXG" id="C7P-dB-i8R"/>
+                        <outlet property="continueButton" destination="B4d-Py-w73" id="WWi-2y-voo"/>
+                        <segue destination="BV1-FR-VrT" kind="show" identifier="toARkitView" id="yB9-MW-UH5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ahR-4x-n3F" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-838" y="25"/>
+        </scene>
         <!--View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="Pocket_Pet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -16,11 +69,22 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </arscnView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lsZ-YW-DXg">
+                                <rect key="frame" x="160.5" y="617" width="54" height="30"/>
+                                <state key="normal" title="Surface">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="SurfaceClicked:" destination="BV1-FR-VrT" eventType="touchUpInside" id="q29-p2-Fi3"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="lsZ-YW-DXg" firstAttribute="top" secondItem="BrB-h1-WRS" secondAttribute="bottom" constant="-50" id="97n-0S-tSs"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="GsS-dJ-CKf"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
+                            <constraint firstItem="lsZ-YW-DXg" firstAttribute="centerX" secondItem="BrB-h1-WRS" secondAttribute="centerX" id="XYx-Px-WKW"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="top" secondItem="U0K-SW-4ec" secondAttribute="top" id="rJc-2c-zQA"/>
                         </constraints>
@@ -28,6 +92,7 @@
                     </view>
                     <connections>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="surfaceButton" destination="lsZ-YW-DXg" id="iLH-Ip-JkF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
