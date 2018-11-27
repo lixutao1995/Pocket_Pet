@@ -10,7 +10,7 @@ import UIKit
 
 class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     
-    var food: [Food] = [Food(foodCategory: .raspberry)]
+    var food: [FoodCategory:Food] = [:]
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -33,7 +33,7 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
         
         let ind = indexPath.section * 3 + indexPath.row
         if ind < food.count {
-            let curFood = food[ind]
+            let curFood = Array(food.values)[ind]
             
             let imageFrame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
             let imageView = UIImageView(frame: imageFrame)
@@ -53,8 +53,8 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     
     func getImage(food: Food) -> UIImage{
         switch food.identifier {
-            case .raspberry:
-                return UIImage(named: "raspberry")!
+            case .brain:
+                return UIImage(named: "brain")!
         }
         
     }

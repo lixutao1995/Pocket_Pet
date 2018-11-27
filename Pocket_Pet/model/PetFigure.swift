@@ -11,7 +11,23 @@ import Foundation
 import UIKit
 import ARKit
 
-class SpaceShip: SCNNode {
+class PetFigure: SCNNode {
+    private let MAX_VALUE = 100
+    
+    var fullness:Int = 0
+    var happiness:Int = 0
+    
+    func eatFood(food: Food) {
+        
+        switch food.identifier {
+        case .brain:
+            fullness = fullness + 10
+        }
+        
+        if fullness > MAX_VALUE {
+            fullness = MAX_VALUE
+        }
+    }
     
     func loadModel() {
         //load ship

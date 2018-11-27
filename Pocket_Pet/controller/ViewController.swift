@@ -16,7 +16,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //for put a pet
     @IBOutlet weak var surfaceButton: UIButton!
     
-
     @IBOutlet var happinessBar: DisplayView!
     
     @IBOutlet var fullnessBar: DisplayView!
@@ -26,7 +25,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var curAnchor:ARPlaneAnchor!
     let detectedPlanes = [SCNPlane]()
     var planeVisualizationParam:Float = 0.5
-    var curPetNode:SCNNode!
+    var curPetNode:SCNNode? = nil
+    let pet = PetFigure()
+    var foods:[FoodCategory:Food] = [:] {
+        didSet {
+            updataFoodCollection()
+        }
+    }
+
     
     //create anchor list for placing, and scene light for display
     var petAnchors = [ARAnchor]()
@@ -143,13 +149,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 DispatchQueue.global().async {
                     DispatchQueue.main.async {
                         print("place an apple")
-                        let apple = Apple()
-                        apple.loadModel()
-                        apple.position = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
+                        let brain = Brain()
+                        brain.loadModel()
+                        brain.position = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
                         
-                        apple.simdScale = simd_float3(10, 10, 10)
+                        brain.simdScale = simd_float3(10, 10, 10)
                 
-                        self.sceneView.scene.rootNode.addChildNode(apple)
+                        self.sceneView.scene.rootNode.addChildNode(brain)
                     }
                 }
             }
@@ -202,39 +208,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             //hitobject test, in order for playing and collecting
             if let hitObject = hitList.first {
                 let node = hitObject.node
-                var flag = false
                 
                 //if its a playing
-                if node.name == "Cube" {
+                if node.name == "Figure" {
                     node.removeFromParentNode()
                     locatePet = true
-                    flag = true
                 }
                 
                 //if its a collection
                 if node.name == "brain" {
                     node.removeFromParentNode()
-                    flag = true
+                    if var brain = foods[.brain] {
+                        brain.count = brain.count + 1
+                        foods[.brain] = brain
+                    } else {
+                        var brain = Food(foodCategory: .brain)
+                        brain.count += 1
+                        foods[.brain] = brain
+                    }
                 }
-                
-                if flag == true {return}
             }
-            
-            // if its a plane, check whether to put a pet, when locatePet is true
-//            if hitPlanes.count > 0 && locatePet == true{
-//                print("here is a plane")
-//                let plane = hitPlanes.first!
-//                let newLocation = SCNVector3(x: plane.worldTransform.columns.3.x, y: plane.worldTransform.columns.3.y, z: plane.worldTransform.columns.3.z)
-//
-//                //create a ship object
-//                let ship = SpaceShip()
-//                ship.loadModel()
-//                ship.position = newLocation
-//
-//                locatePet = false
-//
-//                sceneView.scene.rootNode.addChildNode(ship)
-//            }
         }
     }
     
@@ -247,6 +240,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func popUpTextureMenu(_ sender: UIButton) {
         settingsLauncher.showTextureMenu()
+    }
+    
+    // food collection view update
+    func updataFoodCollection() {
+        settingsLauncher.foodCollectionView.food = foods
     }
     
     //add object will be called when plane detected, parameter is the position
@@ -265,16 +263,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     print("No plane Available")
                     return
                 }
+
+                self.pet.loadModel()
                 
-                let ship = SpaceShip()
-                ship.loadModel()
+                self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
+                self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
                 
-                ship.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
-                ship.simdScale = simd_float3(0.1, 0.1, 0.1)
-                
-                self.sceneView.scene.rootNode.addChildNode(ship)
-                self.curPetNode = ship
+                self.sceneView.scene.rootNode.addChildNode(self.pet)
                 self.planeVisualizationParam = 0.5
+                self.curPetNode = self.pet
                 print("locate one")
             }
         }

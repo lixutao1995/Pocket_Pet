@@ -28,7 +28,6 @@ class SettingsLauncher: NSObject  {
     }()
     
     func showFoodMenu() {
-        
         if let window = UIApplication.shared.keyWindow {
             
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)

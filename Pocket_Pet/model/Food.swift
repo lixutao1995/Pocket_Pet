@@ -9,7 +9,7 @@
 import Foundation
 
 enum FoodCategory {
-    case raspberry
+    case brain
 }
 
 struct Food {
