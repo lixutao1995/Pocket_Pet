@@ -15,6 +15,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     //for put a pet
     @IBOutlet weak var surfaceButton: UIButton!
+    
     //create an plane object for pet, and a plane list for all detected planes
     var curPetPlane:SCNPlane!
     let detectedPlanes = [SCNPlane]()
@@ -222,6 +223,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 sceneView.scene.rootNode.addChildNode(ship)
             }
         }
+    }
+    
+    let settingsLauncher = SettingsLauncher()
+    
+    @IBAction func popUpFoodMenu(_ sender: UIButton) {
+        settingsLauncher.showFoodMenu()
     }
     
     //add object will be called when plane detected, parameter is the position
