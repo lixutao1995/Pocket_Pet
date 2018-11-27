@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 import ARKit
 
-class Apple: SCNNode {
+class Brain: SCNNode {
     
     func loadModel() {
         //load apple

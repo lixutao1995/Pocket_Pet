@@ -15,9 +15,9 @@
 		7813FE5F219B8AB800FAF569 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7813FE5D219B8AB800FAF569 /* LaunchScreen.storyboard */; };
 		7813FE6A219B8AB800FAF569 /* Pocket_PetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE69219B8AB800FAF569 /* Pocket_PetTests.swift */; };
 		7813FE75219B8AB800FAF569 /* Pocket_PetUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE74219B8AB800FAF569 /* Pocket_PetUITests.swift */; };
-		783B8B7A219E7C7700A9812B /* SpaceShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B79219E7C7700A9812B /* SpaceShip.swift */; };
+		783B8B7A219E7C7700A9812B /* PetFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B79219E7C7700A9812B /* PetFigure.swift */; };
 		783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */; };
-		789A800D21AB44360052A0CB /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789A800C21AB44360052A0CB /* Apple.swift */; };
+		789A800D21AB44360052A0CB /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789A800C21AB44360052A0CB /* Brain.swift */; };
 		8A8113A721ACB7AB005A0158 /* SettingsLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113A621ACB7AB005A0158 /* SettingsLauncher.swift */; };
 		8A8113AA21ACB9E9005A0158 /* FoodCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */; };
 		8A8113AC21ACBAD3005A0158 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113AB21ACBAD3005A0158 /* Food.swift */; };
@@ -58,9 +58,9 @@
 		7813FE70219B8AB800FAF569 /* Pocket_PetUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Pocket_PetUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7813FE74219B8AB800FAF569 /* Pocket_PetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pocket_PetUITests.swift; sourceTree = "<group>"; };
 		7813FE76219B8AB800FAF569 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		783B8B79219E7C7700A9812B /* SpaceShip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceShip.swift; sourceTree = "<group>"; };
+		783B8B79219E7C7700A9812B /* PetFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetFigure.swift; sourceTree = "<group>"; };
 		783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrtyViewController.swift; sourceTree = "<group>"; };
-		789A800C21AB44360052A0CB /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
+		789A800C21AB44360052A0CB /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
 		8A8113A621ACB7AB005A0158 /* SettingsLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLauncher.swift; sourceTree = "<group>"; };
 		8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCollectionView.swift; sourceTree = "<group>"; };
 		8A8113AB21ACBAD3005A0158 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
@@ -161,8 +161,8 @@
 		8A8113A521ACB77E005A0158 /* model */ = {
 			isa = PBXGroup;
 			children = (
-				789A800C21AB44360052A0CB /* Apple.swift */,
-				783B8B79219E7C7700A9812B /* SpaceShip.swift */,
+				789A800C21AB44360052A0CB /* Brain.swift */,
+				783B8B79219E7C7700A9812B /* PetFigure.swift */,
 				8A8113AB21ACBAD3005A0158 /* Food.swift */,
 				8A8113B121ACF2D1005A0158 /* Texture.swift */,
 			);
@@ -312,8 +312,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A8113AE21ACDC96005A0158 /* DisplayView.swift in Sources */,
-				789A800D21AB44360052A0CB /* Apple.swift in Sources */,
-				783B8B7A219E7C7700A9812B /* SpaceShip.swift in Sources */,
+				789A800D21AB44360052A0CB /* Brain.swift in Sources */,
+				783B8B7A219E7C7700A9812B /* PetFigure.swift in Sources */,
 				8A8113A721ACB7AB005A0158 /* SettingsLauncher.swift in Sources */,
 				8A8113AA21ACB9E9005A0158 /* FoodCollectionView.swift in Sources */,
 				783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */,
