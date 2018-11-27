@@ -23,9 +23,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BQB-I7-hXG">
-                                <rect key="frame" x="67" y="87" width="240" height="128"/>
-                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B4d-Py-w73">
                                 <rect key="frame" x="130" y="615" width="115" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -41,15 +38,12 @@
                         <constraints>
                             <constraint firstItem="6He-I5-jVe" firstAttribute="bottom" secondItem="B4d-Py-w73" secondAttribute="bottom" constant="20" id="HMC-cC-LVi"/>
                             <constraint firstItem="vdY-xD-bj7" firstAttribute="centerX" secondItem="6He-I5-jVe" secondAttribute="centerX" id="HO0-dT-cqT"/>
-                            <constraint firstItem="BQB-I7-hXG" firstAttribute="top" secondItem="6He-I5-jVe" secondAttribute="top" constant="67" id="Ya3-h5-XZL"/>
                             <constraint firstItem="vdY-xD-bj7" firstAttribute="top" secondItem="6He-I5-jVe" secondAttribute="bottom" multiplier="0.4" id="dFa-Sb-jeB"/>
                             <constraint firstItem="B4d-Py-w73" firstAttribute="centerX" secondItem="6He-I5-jVe" secondAttribute="centerX" id="dzc-3d-Ynd"/>
-                            <constraint firstItem="BQB-I7-hXG" firstAttribute="centerX" secondItem="6He-I5-jVe" secondAttribute="centerX" id="kWG-As-GLQ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6He-I5-jVe"/>
                     </view>
                     <connections>
-                        <outlet property="AppIcon" destination="BQB-I7-hXG" id="C7P-dB-i8R"/>
                         <outlet property="continueButton" destination="B4d-Py-w73" id="WWi-2y-voo"/>
                         <segue destination="BV1-FR-VrT" kind="show" identifier="toARkitView" id="yB9-MW-UH5"/>
                     </connections>
@@ -87,10 +81,6 @@
                                     <action selector="popUpFoodMenu:" destination="BV1-FR-VrT" eventType="touchUpInside" id="tjc-Sm-giE"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="raspberry" translatesAutoresizingMaskIntoConstraints="NO" id="a6t-De-Qrz">
-                                <rect key="frame" x="67" y="124" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -115,7 +105,4 @@
             <point key="canvasLocation" x="-17" y="25"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="raspberry" width="72" height="72"/>
-    </resources>
 </document>

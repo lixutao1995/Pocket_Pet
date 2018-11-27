@@ -15,7 +15,7 @@ class SpaceShip: SCNNode {
     
     func loadModel() {
         //load ship
-        guard let virtualObjectScene = SCNScene(named: "art.scnassets/ship.scn") else {return}
+        guard let virtualObjectScene = SCNScene(named: "art.scnassets/DanceFixed.dae") else {return}
         
         let wrapperNode = SCNNode()
         
