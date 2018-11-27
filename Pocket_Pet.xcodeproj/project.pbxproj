@@ -18,6 +18,9 @@
 		783B8B7A219E7C7700A9812B /* SpaceShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B79219E7C7700A9812B /* SpaceShip.swift */; };
 		783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */; };
 		789A800D21AB44360052A0CB /* Apple.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789A800C21AB44360052A0CB /* Apple.swift */; };
+		8A8113A721ACB7AB005A0158 /* SettingsLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113A621ACB7AB005A0158 /* SettingsLauncher.swift */; };
+		8A8113AA21ACB9E9005A0158 /* FoodCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */; };
+		8A8113AC21ACBAD3005A0158 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113AB21ACBAD3005A0158 /* Food.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		783B8B79219E7C7700A9812B /* SpaceShip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceShip.swift; sourceTree = "<group>"; };
 		783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrtyViewController.swift; sourceTree = "<group>"; };
 		789A800C21AB44360052A0CB /* Apple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Apple.swift; sourceTree = "<group>"; };
+		8A8113A621ACB7AB005A0158 /* SettingsLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLauncher.swift; sourceTree = "<group>"; };
+		8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCollectionView.swift; sourceTree = "<group>"; };
+		8A8113AB21ACBAD3005A0158 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,16 +111,15 @@
 		7813FE51219B8AB700FAF569 /* Pocket_Pet */ = {
 			isa = PBXGroup;
 			children = (
+				8A8113A821ACB9D0005A0158 /* view */,
+				8A8113A521ACB77E005A0158 /* model */,
+				8A8113A421ACB762005A0158 /* controller */,
 				7813FE52219B8AB700FAF569 /* AppDelegate.swift */,
 				7813FE54219B8AB700FAF569 /* art.scnassets */,
-				7813FE56219B8AB700FAF569 /* ViewController.swift */,
 				7813FE58219B8AB700FAF569 /* Main.storyboard */,
-				783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */,
 				7813FE5B219B8AB800FAF569 /* Assets.xcassets */,
 				7813FE5D219B8AB800FAF569 /* LaunchScreen.storyboard */,
 				7813FE60219B8AB800FAF569 /* Info.plist */,
-				783B8B79219E7C7700A9812B /* SpaceShip.swift */,
-				789A800C21AB44360052A0CB /* Apple.swift */,
 			);
 			path = Pocket_Pet;
 			sourceTree = "<group>";
@@ -135,6 +140,34 @@
 				7813FE76219B8AB800FAF569 /* Info.plist */,
 			);
 			path = Pocket_PetUITests;
+			sourceTree = "<group>";
+		};
+		8A8113A421ACB762005A0158 /* controller */ = {
+			isa = PBXGroup;
+			children = (
+				783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */,
+				7813FE56219B8AB700FAF569 /* ViewController.swift */,
+				8A8113A621ACB7AB005A0158 /* SettingsLauncher.swift */,
+			);
+			path = controller;
+			sourceTree = "<group>";
+		};
+		8A8113A521ACB77E005A0158 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				789A800C21AB44360052A0CB /* Apple.swift */,
+				783B8B79219E7C7700A9812B /* SpaceShip.swift */,
+				8A8113AB21ACBAD3005A0158 /* Food.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		8A8113A821ACB9D0005A0158 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */,
+			);
+			path = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,7 +304,10 @@
 			files = (
 				789A800D21AB44360052A0CB /* Apple.swift in Sources */,
 				783B8B7A219E7C7700A9812B /* SpaceShip.swift in Sources */,
+				8A8113A721ACB7AB005A0158 /* SettingsLauncher.swift in Sources */,
+				8A8113AA21ACB9E9005A0158 /* FoodCollectionView.swift in Sources */,
 				783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */,
+				8A8113AC21ACBAD3005A0158 /* Food.swift in Sources */,
 				7813FE57219B8AB700FAF569 /* ViewController.swift in Sources */,
 				7813FE53219B8AB700FAF569 /* AppDelegate.swift in Sources */,
 			);
