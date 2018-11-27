@@ -10,7 +10,7 @@ import UIKit
 
 class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     
-    var food: [FoodCategory:Food] = [:]
+    var food: [FoodCategory:Food] = [.brain:Food(foodCategory: .brain)]
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -23,7 +23,7 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -31,7 +31,7 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
         // fix more than one movie content add to same cell
         cell.contentView.subviews.forEach({ $0.removeFromSuperview() })
         
-        let ind = indexPath.section * 3 + indexPath.row
+        let ind = indexPath.section * 5 + indexPath.row
         if ind < food.count {
             let curFood = Array(food.values)[ind]
             
@@ -41,6 +41,12 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
             
             imageView.image = getImage(food: curFood)
             cell.contentView.addSubview(imageView)
+            
+            var label = UILabel(frame: CGRect(x:0, y: cell.bounds.height, width: cell.bounds.width, height: 40))
+            label.textAlignment = .center
+            label.numberOfLines = 1
+            label.text = "x\(curFood.count)"
+            cell.addSubview(label)
         }
         
         return cell
@@ -48,7 +54,7 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return Int(ceil((Double(food.count) / 3.0)))
+        return Int(ceil((Double(food.count) / 5.0)))
     }
     
     func getImage(food: Food) -> UIImage{
