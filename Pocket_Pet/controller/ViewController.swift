@@ -25,7 +25,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var curPetPlane:SCNPlane!
     var curAnchor:ARPlaneAnchor!
     let detectedPlanes = [SCNPlane]()
-    var planeVisualizationParam:Float = 1.0
+    var planeVisualizationParam:Float = 0.5
     var curPetNode:SCNNode!
     
     //create anchor list for placing, and scene light for display
@@ -33,7 +33,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var sceneLight:SCNLight!
     
     // the prob of generate an apple in a plane when detected
-    let probabilityOfFruit:Float = 0.3
+    let probabilityOfFruit:Float = 1
     
     //locatePet? boolean for determining whether to put pet into detected plane
     var locatePet:Bool = true
@@ -146,6 +146,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         let apple = Apple()
                         apple.loadModel()
                         apple.position = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
+                        
+                        apple.simdScale = simd_float3(10, 10, 10)
                 
                         self.sceneView.scene.rootNode.addChildNode(apple)
                     }
@@ -203,14 +205,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 var flag = false
                 
                 //if its a playing
-                if node.name == "shipMesh" {
+                if node.name == "Cube" {
                     node.removeFromParentNode()
                     locatePet = true
                     flag = true
                 }
                 
                 //if its a collection
-                if node.name == "Apple" {
+                if node.name == "brain" {
                     node.removeFromParentNode()
                     flag = true
                 }

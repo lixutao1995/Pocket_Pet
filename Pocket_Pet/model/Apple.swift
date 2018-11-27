@@ -15,7 +15,7 @@ class Apple: SCNNode {
     
     func loadModel() {
         //load apple
-        guard let virtualObjectScene = SCNScene(named: "art.scnassets/Apple.dae") else {return}
+        guard let virtualObjectScene = SCNScene(named: "art.scnassets/brain.dae") else {return}
         
         let wrapperNode = SCNNode()
         
