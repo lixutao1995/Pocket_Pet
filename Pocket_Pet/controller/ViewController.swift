@@ -16,6 +16,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //for put a pet
     @IBOutlet weak var surfaceButton: UIButton!
     
+
+    @IBOutlet var happinessBar: DisplayView!
+    
+    @IBOutlet var fullnessBar: DisplayView!
+    
     //create an plane object for pet, and a plane list for all detected planes
     var curPetPlane:SCNPlane!
     var curAnchor:ARPlaneAnchor!
@@ -62,7 +67,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         //add this light Node
         sceneView.scene.rootNode.addChildNode(lightNode)
-        
     }
     
     @IBAction func SurfaceClicked(_ sender: Any) {
@@ -236,6 +240,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     @IBAction func popUpFoodMenu(_ sender: UIButton) {
         settingsLauncher.showFoodMenu()
+    }
+    
+    
+    @IBAction func popUpTextureMenu(_ sender: UIButton) {
+        settingsLauncher.showTextureMenu()
     }
     
     //add object will be called when plane detected, parameter is the position

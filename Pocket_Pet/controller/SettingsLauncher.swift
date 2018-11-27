@@ -19,12 +19,21 @@ class SettingsLauncher: NSObject  {
         return cv
     }()
     
+    let textureCollectionView: TextureCollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cv = TextureCollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "textureCeil")
+        cv.backgroundColor = UIColor.white
+        return cv
+    }()
+    
     func showFoodMenu() {
         
         if let window = UIApplication.shared.keyWindow {
             
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             
+        
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFoodMenu)))
             
             let height: CGFloat = 200
@@ -56,6 +65,48 @@ class SettingsLauncher: NSObject  {
             
             if let window = UIApplication.shared.keyWindow {
                 self.foodCollectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.foodCollectionView.frame.width, height: self.foodCollectionView.frame.height)
+            }
+        })
+    }
+    
+    func showTextureMenu() {
+        
+        if let window = UIApplication.shared.keyWindow {
+            
+            blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+            
+            
+            blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissTextureMenu)))
+            
+            let height: CGFloat = 200
+            let y = window.frame.height - height
+            
+            window.addSubview(blackView)
+            window.addSubview(textureCollectionView)
+            foodCollectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
+            
+            
+            blackView.frame = window.frame
+            blackView.alpha = 0
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                
+                self.blackView.alpha = 1
+                self.textureCollectionView.frame = CGRect(x: 0, y: y, width: window.frame.width, height: height)
+                
+            }, completion: nil)
+            
+            
+        }
+        
+    }
+    
+    @objc func dismissTextureMenu() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.blackView.alpha = 0
+            
+            if let window = UIApplication.shared.keyWindow {
+                self.textureCollectionView.frame = CGRect(x: 0, y: window.frame.height, width: self.textureCollectionView.frame.width, height: self.textureCollectionView.frame.height)
             }
         })
     }
