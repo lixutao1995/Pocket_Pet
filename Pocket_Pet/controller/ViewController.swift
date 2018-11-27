@@ -16,9 +16,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //for put a pet
     @IBOutlet weak var surfaceButton: UIButton!
     
+    @IBOutlet var happinessBar: DisplayView!
+    
+    @IBOutlet var fullnessBar: DisplayView!
+    
     //create an plane object for pet, and a plane list for all detected planes
     var curPetPlane:SCNPlane!
+    var curAnchor:ARPlaneAnchor!
     let detectedPlanes = [SCNPlane]()
+    var planeVisualizationParam:Float = 0.5
+    var curPetNode:SCNNode? = nil
+    let pet = PetFigure()
+    var foods:[FoodCategory:Food] = [:] {
+        didSet {
+            updataFoodCollection()
+        }
+    }
+
     
     //create anchor list for placing, and scene light for display
     var petAnchors = [ARAnchor]()
@@ -59,12 +73,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         //add this light Node
         sceneView.scene.rootNode.addChildNode(lightNode)
-        
     }
     
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
-//        addObject()
+        addObject()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,9 +92,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         configuration.isLightEstimationEnabled = true
         
         // display the feature points for debug issue
-        #if DEBUG
-            sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
-        #endif
+//        #if DEBUG
+//            sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
+//        #endif
 
         // Run the view's session
         sceneView.session.run(configuration)
@@ -117,9 +130,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             //create node, and initialize a plane object
             node = SCNNode()
             curPetPlane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
+            curAnchor = planeAnchor
             
             //set the first material, which would be the indication of finding a plane
-            curPetPlane.firstMaterial?.diffuse.contents = UIColor.green.withAlphaComponent(0.5)
+            curPetPlane.firstMaterial?.diffuse.contents = UIColor.white.withAlphaComponent(CGFloat(planeVisualizationParam))
             
             //initialize the return node
             let planeNode = SCNNode(geometry: curPetPlane)
@@ -135,11 +149,13 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 DispatchQueue.global().async {
                     DispatchQueue.main.async {
                         print("place an apple")
-                        let apple = Apple()
-                        apple.loadModel()
-                        apple.position = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
+                        let brain = Brain()
+                        brain.loadModel()
+                        brain.position = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
+                        
+                        brain.simdScale = simd_float3(10, 10, 10)
                 
-                        self.sceneView.scene.rootNode.addChildNode(apple)
+                        self.sceneView.scene.rootNode.addChildNode(brain)
                     }
                 }
             }
@@ -158,6 +174,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //check new plane anchor detected and added into the pet anchors list
     func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
         if let planeAnchor = anchor as? ARPlaneAnchor {
+            
+            curAnchor = planeAnchor
             //if already contains
             if petAnchors.contains(planeAnchor) {
                 //check if have plane node?
@@ -171,6 +189,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         plane.width = CGFloat(planeAnchor.center.x)
                         plane.height = CGFloat(planeAnchor.center.z)
                         updatePetMaterial()
+                        plane.firstMaterial?.diffuse.contents = UIColor.white.withAlphaComponent(CGFloat(planeVisualizationParam))
                     }
                 }
             }
@@ -189,38 +208,25 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             //hitobject test, in order for playing and collecting
             if let hitObject = hitList.first {
                 let node = hitObject.node
-                var flag = false
                 
                 //if its a playing
-                if node.name == "shipMesh" {
+                if node.name == "Figure" {
                     node.removeFromParentNode()
                     locatePet = true
-                    flag = true
                 }
                 
                 //if its a collection
-                if node.name == "Apple" {
+                if node.name == "brain" {
                     node.removeFromParentNode()
-                    flag = true
+                    if var brain = foods[.brain] {
+                        brain.count = brain.count + 1
+                        foods[.brain] = brain
+                    } else {
+                        var brain = Food(foodCategory: .brain)
+                        brain.count += 1
+                        foods[.brain] = brain
+                    }
                 }
-                
-                if flag == true {return}
-            }
-            
-            // if its a plane, check whether to put a pet, when locatePet is true
-            if hitPlanes.count > 0 && locatePet == true{
-                print("here is a plane")
-                let plane = hitPlanes.first!
-                let newLocation = SCNVector3(x: plane.worldTransform.columns.3.x, y: plane.worldTransform.columns.3.y, z: plane.worldTransform.columns.3.z)
-                
-                //create a ship object
-                let ship = SpaceShip()
-                ship.loadModel()
-                ship.position = newLocation
-                
-                locatePet = false
-                
-                sceneView.scene.rootNode.addChildNode(ship)
             }
         }
     }
@@ -231,26 +237,45 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         settingsLauncher.showFoodMenu()
     }
     
+    
+    @IBAction func popUpTextureMenu(_ sender: UIButton) {
+        settingsLauncher.showTextureMenu()
+    }
+    
+    // food collection view update
+    func updataFoodCollection() {
+        settingsLauncher.foodCollectionView.food = foods
+    }
+    
     //add object will be called when plane detected, parameter is the position
-//    func addObject() {
-//        if locatePet == false || petAnchors.count <= 0 {
-//            print("no available anchor or already have a pet located")
-//            return
-//        }
-//        DispatchQueue.global().async {
-//            DispatchQueue.main.async {
-//                let ship = SpaceShip()
-//                ship.loadModel()
-//
-//                if let planeAnchor = self.petAnchors.first! as? ARPlaneAnchor {
-//                    ship.position = SCNVector3(CGFloat(planeAnchor.center.x), CGFloat(planeAnchor.center.y), CGFloat(planeAnchor.center.z))
-//                    self.sceneView.scene.rootNode.addChildNode(ship)
-//                    print("locate one")
-//                    self.locatePet = false
-//                }
-//            }
-//        }
-//    }
+    func addObject() {
+        if petAnchors.count <= 0 {
+            print("no available anchor or already have a pet located")
+            return
+        }
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                if let node = self.curPetNode {
+                    node.removeFromParentNode()
+                }
+                
+                guard let plane = self.curAnchor else {
+                    print("No plane Available")
+                    return
+                }
+
+                self.pet.loadModel()
+                
+                self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
+                self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
+                
+                self.sceneView.scene.rootNode.addChildNode(self.pet)
+                self.planeVisualizationParam = 0.5
+                self.curPetNode = self.pet
+                print("locate one")
+            }
+        }
+    }
     
     // ended
 
@@ -258,7 +283,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func updatePetMaterial() {
         let material = self.curPetPlane.materials.first!
 
-        material.diffuse.contentsTransform = SCNMatrix4MakeScale(Float(self.curPetPlane.width), Float(self.curPetPlane.height), 1)
+        material.diffuse.contentsTransform = SCNMatrix4MakeScale(Float(self.curPetPlane.width), Float(self.curPetPlane.height), 3)
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {

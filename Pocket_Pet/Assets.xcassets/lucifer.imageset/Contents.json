@@ -2,11 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "icons8-lucifer-48.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icons8-raspberry-96.png",
+      "filename" : "icons8-lucifer-96.png",
       "scale" : "2x"
     },
     {

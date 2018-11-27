@@ -11,11 +11,11 @@ import Foundation
 import UIKit
 import ARKit
 
-class Apple: SCNNode {
+class Brain: SCNNode {
     
     func loadModel() {
         //load apple
-        guard let virtualObjectScene = SCNScene(named: "art.scnassets/Apple.dae") else {return}
+        guard let virtualObjectScene = SCNScene(named: "art.scnassets/brain.dae") else {return}
         
         let wrapperNode = SCNNode()
         

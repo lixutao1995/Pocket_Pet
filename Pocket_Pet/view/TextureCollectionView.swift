@@ -1,16 +1,15 @@
 //
-//  FoodCollectionView.swift
+//  TextureCollectionView.swift
 //  Pocket_Pet
 //
 //  Created by 林岳 on 11/26/18.
-//  Copyright © 2018 Leiquan Pan. All rights reserved.
 //
 
 import UIKit
 
-class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
+class TextureCollectionView: UICollectionView, UICollectionViewDataSource {
     
-    var food: [FoodCategory:Food] = [.brain:Food(foodCategory: .brain)]
+    var textures: [Texture] = [Texture(textureCategory: .lucifer)]
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -23,30 +22,24 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "foodCeil", for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "textureCeil", for: indexPath)
         // fix more than one movie content add to same cell
         cell.contentView.subviews.forEach({ $0.removeFromSuperview() })
         
-        let ind = indexPath.section * 5 + indexPath.row
-        if ind < food.count {
-            let curFood = Array(food.values)[ind]
+        let ind = indexPath.section * 3 + indexPath.row
+        if ind < textures.count {
+            let texture = textures[ind]
             
             let imageFrame = CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height)
             let imageView = UIImageView(frame: imageFrame)
             imageView.contentMode = .scaleAspectFill
             
-            imageView.image = getImage(food: curFood)
+            imageView.image = getImage(texture: texture)
             cell.contentView.addSubview(imageView)
-            
-            var label = UILabel(frame: CGRect(x:0, y: cell.bounds.height, width: cell.bounds.width, height: 40))
-            label.textAlignment = .center
-            label.numberOfLines = 1
-            label.text = "x\(curFood.count)"
-            cell.addSubview(label)
         }
         
         return cell
@@ -54,13 +47,13 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return Int(ceil((Double(food.count) / 5.0)))
+        return Int(ceil((Double(textures.count) / 3.0)))
     }
     
-    func getImage(food: Food) -> UIImage{
-        switch food.identifier {
-            case .brain:
-                return UIImage(named: "brain")!
+    func getImage(texture: Texture) -> UIImage{
+        switch texture.identifier {
+        case .lucifer:
+            return UIImage(named: "lucifer")!
         }
         
     }
