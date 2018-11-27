@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     //for put a pet
     @IBOutlet weak var surfaceButton: UIButton!
@@ -23,8 +23,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     //create an plane object for pet, and a plane list for all detected planes
     var curPetPlane:SCNPlane!
     var curAnchor:ARPlaneAnchor!
+    var curBallNode:SCNNode!
     let detectedPlanes = [SCNPlane]()
-    var planeVisualizationParam:Float = 0.5
+    var planeVisualizationParam:Float = 0
     var curPetNode:SCNNode? = nil
     let pet = PetFigure()
     var foods:[FoodCategory:Food] = [:] {
@@ -32,14 +33,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             updataFoodCollection()
         }
     }
-
+    
     
     //create anchor list for placing, and scene light for display
     var petAnchors = [ARAnchor]()
     var sceneLight:SCNLight!
     
     // the prob of generate an apple in a plane when detected
-    let probabilityOfFruit:Float = 1
+    let probabilityOfFruit:Float = 0
     
     //locatePet? boolean for determining whether to put pet into detected plane
     var locatePet:Bool = true
@@ -78,6 +79,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
         addObject()
+        curBallNode.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,14 +94,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         configuration.isLightEstimationEnabled = true
         
         // display the feature points for debug issue
-//        #if DEBUG
-//            sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
-//        #endif
-
+        //        #if DEBUG
+        //            sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
+        //        #endif
+        
         // Run the view's session
         sceneView.session.run(configuration)
         
-//        addObject()
+        //        addObject()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -108,7 +110,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         // Pause the view's session
         sceneView.session.pause()
     }
-
+    
     // MARK: - ARSCNViewDelegate
     
     // for adapting light, timely
@@ -119,7 +121,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
-
+    
     // Override to create and configure nodes for anchors added to the view's session.
     func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
         var node:SCNNode?
@@ -141,7 +143,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             planeNode.position = SCNVector3(CGFloat(planeAnchor.center.x), 0, CGFloat(planeAnchor.center.z))
             planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
             
+            let ballPosition = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
+            
             updatePetMaterial()
+            createPoint(position: ballPosition)
             
             //when a plane detected, generate a random float, to check whether its meet the probability, if yes, put an apple into this plane for future collection
             let prob = Float.random(in: 0.0...1.0)
@@ -154,7 +159,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                         brain.position = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
                         
                         brain.simdScale = simd_float3(10, 10, 10)
-                
+                        
                         self.sceneView.scene.rootNode.addChildNode(brain)
                     }
                 }
@@ -167,7 +172,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             node?.addChildNode(planeNode)
             petAnchors.append(planeAnchor)
         }
-     
+        
         return node
     }
     
@@ -188,12 +193,35 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     if let plane = planeNode.geometry as? SCNPlane {
                         plane.width = CGFloat(planeAnchor.center.x)
                         plane.height = CGFloat(planeAnchor.center.z)
-                        updatePetMaterial()
+                        let ballPosition = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
+                        
+                        createPoint(position: ballPosition)
                         plane.firstMaterial?.diffuse.contents = UIColor.white.withAlphaComponent(CGFloat(planeVisualizationParam))
+                        updatePetMaterial()
                     }
                 }
             }
         }
+    }
+    
+    func createPoint(position: SCNVector3) {
+        if let ballNode = curBallNode {
+            ballNode.removeFromParentNode()
+        }
+        
+        let point = SCNSphere(radius: 0.005)
+        let ballNode = SCNNode(geometry: point)
+        ballNode.position = position
+        sceneView.scene.rootNode.addChildNode(ballNode)
+        curBallNode = ballNode
+        
+        // if has a pet, set the ball to be hidden
+        if let existPet = curPetNode {
+            curBallNode.isHidden = true
+        }
+        
+//        let rectPath = UIBezierPath(rect: <#T##CGRect#>)
+//        //        let circle =
     }
     
     //added by lin yue
@@ -201,7 +229,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             let location = touch.location(in: sceneView)
-
+            
             let hitList = sceneView.hitTest(location, options: nil)
             let hitPlanes = sceneView.hitTest(location, types: .existingPlane)
             
@@ -263,14 +291,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                     print("No plane Available")
                     return
                 }
-
+                
                 self.pet.loadModel()
                 
                 self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
                 self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
                 
                 self.sceneView.scene.rootNode.addChildNode(self.pet)
-                self.planeVisualizationParam = 0.5
+                self.planeVisualizationParam = 0
                 self.curPetNode = self.pet
                 print("locate one")
             }
@@ -278,11 +306,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     // ended
-
+    
     // function for funding pet material
     func updatePetMaterial() {
         let material = self.curPetPlane.materials.first!
-
+        
         material.diffuse.contentsTransform = SCNMatrix4MakeScale(Float(self.curPetPlane.width), Float(self.curPetPlane.height), 3)
     }
     
