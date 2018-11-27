@@ -46,6 +46,9 @@ class SettingsLauncher: NSObject  {
             blackView.frame = window.frame
             blackView.alpha = 0
             
+            
+            setLayout(collectionView: foodCollectionView)
+            
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
                 self.blackView.alpha = 1
@@ -88,6 +91,8 @@ class SettingsLauncher: NSObject  {
             blackView.frame = window.frame
             blackView.alpha = 0
             
+            setLayout(collectionView: textureCollectionView)
+            
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
                 
                 self.blackView.alpha = 1
@@ -112,6 +117,22 @@ class SettingsLauncher: NSObject  {
     
     override init() {
         super.init()
+    }
+    
+    private func setLayout(collectionView: UICollectionView){
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        let width = (collectionView.bounds.width - (5 * 20)) / 5
+        let height = width
+        let cellSize = CGSize(width: width, height: height)
+        
+        layout.sectionInset = UIEdgeInsets(top: collectionView.bounds.height / 2 - height, left: 20, bottom: 10, right: 20)
+        layout.itemSize = cellSize
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        
+        collectionView.collectionViewLayout = layout
     }
     
     
