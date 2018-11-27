@@ -83,7 +83,7 @@ class SettingsLauncher: NSObject  {
             
             window.addSubview(blackView)
             window.addSubview(textureCollectionView)
-            foodCollectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
+            textureCollectionView.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: height)
             
             
             blackView.frame = window.frame
