@@ -19,4 +19,9 @@ struct Food {
     init(foodCategory: FoodCategory) {
         identifier = foodCategory
     }
+    
+    init(foodCategory: FoodCategory, count: Int) {
+        identifier = foodCategory
+        self.count = count
+    }
 }

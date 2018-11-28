@@ -10,7 +10,7 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDelegate {
     
     @IBOutlet var sceneView: ARSCNView!
     //for put a pet
@@ -28,7 +28,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     var planeVisualizationParam:Float = 0
     var curPetNode:SCNNode? = nil
     let pet = PetFigure()
-    var foods:[FoodCategory:Food] = [:] {
+    var foods:[FoodCategory:Food] = [.brain:Food(foodCategory: .brain, count: 5)] {
         didSet {
             updataFoodCollection()
         }
@@ -74,6 +74,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         //add this light Node
         sceneView.scene.rootNode.addChildNode(lightNode)
+        
+        
+        settingsLauncher.foodCollectionView.delegate = self
+        settingsLauncher.textureCollectionView.delegate = self
+        
+        updataFoodCollection()
+        
+        fullnessBar.backgroundColor = UIColor.white
+        fullnessBar.color = UIColor(red: 52/255.0, green: 152/255.0, blue: 219/255.0, alpha: 1.0)
     }
     
     @IBAction func SurfaceClicked(_ sender: Any) {
@@ -259,6 +268,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    private func updateFood(foodCategory: FoodCategory, num: Int) {
+        if var curFood = foods[foodCategory] {
+            curFood.count = curFood.count + 1
+            foods[foodCategory] = curFood
+        } else {
+            var food = Food(foodCategory: foodCategory)
+            food.count = num
+            foods[foodCategory] = food
+        }
+    }
+    
     let settingsLauncher = SettingsLauncher()
     
     @IBAction func popUpFoodMenu(_ sender: UIButton) {
@@ -304,6 +324,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             }
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        let cell = collectionView.cellForItem(at: indexPath)!
+        let ind = indexPath.section * 5 + indexPath.row
+        if let foodCollectionView = collectionView as? FoodCollectionView {
+            if ind < foodCollectionView.food.count {
+                let foodCate = Array(foodCollectionView.food.keys)[ind]
+                var food = foods[foodCate]!
+                if food.count > 0 {
+                    food.count = food.count - 1
+                    foods[foodCate] = food
+                    pet.eatFood(food: food)
+                }
+            }
+        } else if let textureCollectionView = collectionView as? TextureCollectionView {
+            
+            
+        }
+        updateBars()
+    }
+    
+    func updateBars() {
+        fullnessBar.animateValue(to: CGFloat(Float(pet.fullness) / Float(pet.MAX_VALUE)))
+        happinessBar.animateValue(to: CGFloat(Float(pet.happiness) / Float(pet.MAX_VALUE)))
+    }
+
     
     // ended
     

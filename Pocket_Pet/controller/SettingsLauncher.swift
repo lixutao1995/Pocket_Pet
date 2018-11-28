@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsLauncher: NSObject  {
+class SettingsLauncher: NSObject {
     let blackView = UIView()
     
     let foodCollectionView: FoodCollectionView = {
@@ -26,6 +26,10 @@ class SettingsLauncher: NSObject  {
         cv.backgroundColor = UIColor.white
         return cv
     }()
+    
+    override init() {
+        super.init()
+    }
     
     func showFoodMenu() {
         if let window = UIApplication.shared.keyWindow {
@@ -115,10 +119,6 @@ class SettingsLauncher: NSObject  {
         })
     }
     
-    override init() {
-        super.init()
-    }
-    
     private func setLayout(collectionView: UICollectionView){
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -134,6 +134,5 @@ class SettingsLauncher: NSObject  {
         
         collectionView.collectionViewLayout = layout
     }
-    
-    
+
 }
