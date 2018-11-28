@@ -29,9 +29,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     // current indicator for ball placing
     var curBallNode:SCNNode!
     
-    // all planes available, for randomly generate food
-    let detectedPlanes = [SCNPlane]()
-    
     // visualization for plane, 1: light, 0: invisible
     var planeVisualizationParam:Float = 1
     
@@ -40,6 +37,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     
     // current pet
     let pet = PetFigure()
+    
+    // food diction
     var foods:[FoodCategory:Food] = [.brain:Food(foodCategory: .brain, count: 5)] {
         didSet {
             updataFoodCollection()
@@ -49,9 +48,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     // collection view controller
     let settingsLauncher = SettingsLauncher()
     
+    // time interval fo updating food, 60 = 1 min
+    var timeInterval = 60
+    
+    // food generation flag, started generation when enabled
+    var foodGeneration:Bool = false
+    
     
     //create anchor list for placing, and scene light for display
-    var petAnchors = [ARAnchor]()
+    var petAnchors = [ARPlaneAnchor]()
     var sceneLight:SCNLight!
     
     // the prob of generate an apple in a plane when detected
@@ -103,8 +108,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     // surface click function, when clicked, put pet, enable food generation
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
-        addObject()
+        addPet()
         curBallNode.isHidden = true
+        foodGeneration = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -118,6 +124,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         configuration.planeDetection = .horizontal
         configuration.isLightEstimationEnabled = true
         
+        // set the plane visualization percentage
+        planeVisualizationParam = 1
+        
         // display the feature points for debug issue
         //        #if DEBUG
         //            sceneView.debugOptions = ARSCNDebugOptions.showFeaturePoints
@@ -125,8 +134,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         
         // Run the view's session
         sceneView.session.run(configuration)
-        
-        //        addObject()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -134,6 +141,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         
         // Pause the view's session
         sceneView.session.pause()
+        foodGeneration = false
     }
     
     // MARK: - ARSCNViewDelegate
@@ -143,6 +151,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // if exist a estimate of light
         if let lightEsti = self.sceneView.session.currentFrame?.lightEstimate {
             sceneLight.intensity = lightEsti.ambientIntensity
+        }
+        
+        // update food
+        if Int(time) % timeInterval == 0 && foodGeneration == true {
+            print("Generate food")
+            
+            GenerateFoodAccordingtoAllPlanes()
         }
     }
     
@@ -175,23 +190,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             
             // create ball indication
             createPoint(position: ballPosition)
-            
-            //when a plane detected, generate a random float, to check whether its meet the probability, if yes, put an apple into this plane for future collection
-            let prob = Float.random(in: 0.0...1.0)
-            if prob < probabilityOfFruit {
-                DispatchQueue.global().async {
-                    DispatchQueue.main.async {
-                        print("place an apple")
-                        let brain = Brain()
-                        brain.loadModel()
-                        brain.position = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
-                        
-                        brain.simdScale = simd_float3(10, 10, 10)
-                        
-                        self.sceneView.scene.rootNode.addChildNode(brain)
-                    }
-                }
-            }
             
             //print message
             print("a plane detected")
@@ -232,6 +230,40 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
     
+    // for every detected planeAnchor, there is a probability to generate a food here every minute
+    func GenerateFoodAccordingtoAllPlanes() {
+        
+        // for every anchor
+        for planeAnchor in petAnchors {
+            
+            //generate prob
+            let prob = Float.random(in: 0.0...1.0)
+            
+            // if meet
+            if prob < probabilityOfFruit {
+                DispatchQueue.global().async {
+                    DispatchQueue.main.async {
+                        print("place an apple")
+                        
+                        // create a food node and added into scene
+                        let brain = Brain()
+                        brain.loadModel()
+                        
+                        let x_bias = Float.random(in: 0.0...0.4)
+                        let y_bias = Float.random(in: 0.0...1.0)
+                        let z_bias = Float.random(in: 0.0...0.4)
+                        brain.position = SCNVector3(x: planeAnchor.transform.columns.3.x + x_bias, y: planeAnchor.transform.columns.3.y + y_bias, z: planeAnchor.transform.columns.3.z + z_bias)
+                        
+                        brain.simdScale = simd_float3(10, 10, 10)
+
+                        self.sceneView.scene.rootNode.addChildNode(brain)
+                    }
+                }
+            }
+        }
+        
+    }
+    
     // create point, which is the ball, called whenever detected a plane
     func createPoint(position: SCNVector3) {
         if let ballNode = curBallNode {
@@ -247,7 +279,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.curBallNode = ballNode
                 
                 // if has a pet, set the ball to be hidden
-                if let existPet = self.curPetNode {
+                if let _ = self.curPetNode {
                     self.curBallNode.isHidden = true
                 }
             }
@@ -264,7 +296,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             let location = touch.location(in: sceneView)
             
             let hitList = sceneView.hitTest(location, options: nil)
-            let hitPlanes = sceneView.hitTest(location, types: .existingPlane)
             
             //hitobject test, in order for playing and collecting
             if let hitObject = hitList.first {
@@ -295,8 +326,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             foods[foodCategory] = food
         }
     }
-    
-    let settingsLauncher = SettingsLauncher()
 
     @IBAction func popUpFoodMenu(_ sender: UIButton) {
         settingsLauncher.showFoodMenu()
@@ -313,7 +342,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
     
     //add object will be called when plane detected, put into currentPetAnchor
-    func addObject() {
+    func addPet() {
         if petAnchors.count <= 0 {
             print("no available anchor or already have a pet located")
             return
