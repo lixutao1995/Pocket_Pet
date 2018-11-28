@@ -12,7 +12,7 @@ import UIKit
 import ARKit
 
 class PetFigure: SCNNode {
-    private let MAX_VALUE = 100
+    let MAX_VALUE = 100
     
     var fullness:Int = 0
     var happiness:Int = 0
