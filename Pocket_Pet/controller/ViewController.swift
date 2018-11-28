@@ -279,14 +279,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 //if its a collection
                 if node.name == "brain" {
                     node.removeFromParentNode()
-                    if var brain = foods[.brain] {
-                        brain.count = brain.count + 1
-                        foods[.brain] = brain
-                    } else {
-                        var brain = Food(foodCategory: .brain)
-                        brain.count += 1
-                        foods[.brain] = brain
-                    }
+                    updateFood(foodCategory: .brain, num: 1)
                 }
             }
         }
@@ -294,7 +287,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     
     private func updateFood(foodCategory: FoodCategory, num: Int) {
         if var curFood = foods[foodCategory] {
-            curFood.count = curFood.count + 1
+            curFood.count = curFood.count + num
             foods[foodCategory] = curFood
         } else {
             var food = Food(foodCategory: foodCategory)
@@ -356,10 +349,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         if let foodCollectionView = collectionView as? FoodCollectionView {
             if ind < foodCollectionView.food.count {
                 let foodCate = Array(foodCollectionView.food.keys)[ind]
-                var food = foods[foodCate]!
+                let food = foods[foodCate]!
                 if food.count > 0 {
-                    food.count = food.count - 1
-                    foods[foodCate] = food
+                    updateFood(foodCategory: foodCate, num: -1)
                     pet.eatFood(food: food)
                 }
             }
