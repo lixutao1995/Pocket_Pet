@@ -22,11 +22,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     
     //create an plane object for pet, and a plane list for all detected planes
     var curPetPlane:SCNPlane!
+    
+    // current anchor for display current pet
     var curAnchor:ARPlaneAnchor!
+    
+    // current indicator for ball placing
     var curBallNode:SCNNode!
+    
+    // all planes available, for randomly generate food
     let detectedPlanes = [SCNPlane]()
-    var planeVisualizationParam:Float = 0
+    
+    // visualization for plane, 1: light, 0: invisible
+    var planeVisualizationParam:Float = 1
+    
+    // current petNode
     var curPetNode:SCNNode? = nil
+    
+    // current pet
     let pet = PetFigure()
     var foods:[FoodCategory:Food] = [.brain:Food(foodCategory: .brain, count: 5)] {
         didSet {
@@ -34,13 +46,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
     
+    // collection view controller
+    let settingsLauncher = SettingsLauncher()
+    
     
     //create anchor list for placing, and scene light for display
     var petAnchors = [ARAnchor]()
     var sceneLight:SCNLight!
     
     // the prob of generate an apple in a plane when detected
-    let probabilityOfFruit:Float = 0
+    let probabilityOfFruit:Float = 1
     
     //locatePet? boolean for determining whether to put pet into detected plane
     var locatePet:Bool = true
@@ -85,6 +100,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         fullnessBar.color = UIColor(red: 52/255.0, green: 152/255.0, blue: 219/255.0, alpha: 1.0)
     }
     
+    // surface click function, when clicked, put pet, enable food generation
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
         addObject()
@@ -138,7 +154,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         //if the anchor can change to ARPlaneAnchor, which means it has found a valid plane anchor
         if let planeAnchor = anchor as? ARPlaneAnchor {
             
-            //create node, and initialize a plane object
+            //create plane node, and initialize a plane object
             node = SCNNode()
             curPetPlane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
             curAnchor = planeAnchor
@@ -152,9 +168,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             planeNode.position = SCNVector3(CGFloat(planeAnchor.center.x), 0, CGFloat(planeAnchor.center.z))
             planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2, 1, 0, 0)
             
+            // create ball position
             let ballPosition = SCNVector3(CGFloat(planeAnchor.transform.columns.3.x), CGFloat(planeAnchor.transform.columns.3.y), CGFloat(planeAnchor.transform.columns.3.z))
             
             updatePetMaterial()
+            
+            // create ball indication
             createPoint(position: ballPosition)
             
             //when a plane detected, generate a random float, to check whether its meet the probability, if yes, put an apple into this plane for future collection
@@ -198,7 +217,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     let planeNode = node.childNodes.first!
                     planeNode.position = SCNVector3(CGFloat(planeAnchor.center.x), 0, CGFloat(planeAnchor.center.z))
                     
-                    // if has geometry
+                    // if has a plane, change position and create updated ball
                     if let plane = planeNode.geometry as? SCNPlane {
                         plane.width = CGFloat(planeAnchor.center.x)
                         plane.height = CGFloat(planeAnchor.center.z)
@@ -213,20 +232,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
     
+    // create point, which is the ball, called whenever detected a plane
     func createPoint(position: SCNVector3) {
         if let ballNode = curBallNode {
             ballNode.removeFromParentNode()
         }
         
-        let point = SCNSphere(radius: 0.005)
-        let ballNode = SCNNode(geometry: point)
-        ballNode.position = position
-        sceneView.scene.rootNode.addChildNode(ballNode)
-        curBallNode = ballNode
-        
-        // if has a pet, set the ball to be hidden
-        if let existPet = curPetNode {
-            curBallNode.isHidden = true
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                let point = SCNSphere(radius: 0.005)
+                let ballNode = SCNNode(geometry: point)
+                ballNode.position = position
+                self.sceneView.scene.rootNode.addChildNode(ballNode)
+                self.curBallNode = ballNode
+                
+                // if has a pet, set the ball to be hidden
+                if let existPet = self.curPetNode {
+                    self.curBallNode.isHidden = true
+                }
+            }
         }
         
 //        let rectPath = UIBezierPath(rect: <#T##CGRect#>)
@@ -273,7 +297,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
     
     let settingsLauncher = SettingsLauncher()
-    
+
     @IBAction func popUpFoodMenu(_ sender: UIButton) {
         settingsLauncher.showFoodMenu()
     }
@@ -288,12 +312,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         settingsLauncher.foodCollectionView.food = foods
     }
     
-    //add object will be called when plane detected, parameter is the position
+    //add object will be called when plane detected, put into currentPetAnchor
     func addObject() {
         if petAnchors.count <= 0 {
             print("no available anchor or already have a pet located")
             return
         }
+        
         DispatchQueue.global().async {
             DispatchQueue.main.async {
                 if let node = self.curPetNode {
