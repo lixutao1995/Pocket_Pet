@@ -49,6 +49,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     let settingsLauncher = SettingsLauncher()
     
     // time interval fo updating food, 60 = 1 min
+
     let timeInterval = 10
     
     // maximum food generated each time
@@ -112,6 +113,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         
         fullnessBar.backgroundColor = UIColor.white
         fullnessBar.color = UIColor(red: 52/255.0, green: 152/255.0, blue: 219/255.0, alpha: 1.0)
+        
+        happinessBar.backgroundColor = UIColor.white
+        happinessBar.color = UIColor(red: 230/255.0, green: 126/255.0, blue: 34/255.0, alpha: 1.0)
     }
     
     // surface click function, when clicked, put pet, enable food generation
@@ -394,6 +398,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 if food.count > 0 {
                     updateFood(foodCategory: foodCate, num: -1)
                     pet.eatFood(food: food)
+                    settingsLauncher.dismissFoodMenu()
                 }
             }
         } else if let textureCollectionView = collectionView as? TextureCollectionView {
@@ -407,7 +412,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         fullnessBar.animateValue(to: CGFloat(Float(pet.fullness) / Float(pet.MAX_VALUE)))
         happinessBar.animateValue(to: CGFloat(Float(pet.happiness) / Float(pet.MAX_VALUE)))
     }
-
     
     // ended
     
