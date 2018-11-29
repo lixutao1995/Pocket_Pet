@@ -49,7 +49,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     let settingsLauncher = SettingsLauncher()
     
     // time interval fo updating food, 60 = 1 min
-    var timeInterval = 60
+    let timeInterval = 10
+    
+    // maximum food generated each time
+    let maxFood = 5
+    
+    // current food in scene
+    var foodHasGenerated = 0
     
     // food generation flag, started generation when enabled
     var foodGeneration:Bool = false
@@ -59,8 +65,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var petAnchors = [ARPlaneAnchor]()
     var sceneLight:SCNLight!
     
+    // all the point node
+    var points = [SCNNode]()
+    
     // the prob of generate an apple in a plane when detected
-    let probabilityOfFruit:Float = 1
+    let probabilityOfFruit:Float = 0.5
     
     //locatePet? boolean for determining whether to put pet into detected plane
     var locatePet:Bool = true
@@ -109,8 +118,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
         addPet()
-        curBallNode.isHidden = true
         foodGeneration = true
+        
+        // set all points to be invisible
+
+        for ball in points {
+            ball.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -155,8 +169,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         
         // update food
         if Int(time) % timeInterval == 0 && foodGeneration == true {
-            print("Generate food")
-            
             GenerateFoodAccordingtoAllPlanes()
         }
     }
@@ -230,38 +242,38 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
     
+    private func randomPosition(lowerBound lower: Float, upperBound upper: Float) -> Float {
+        return Float(arc4random()) / Float(UInt32.max) * (lower - upper) + upper
+    }
+    
     // for every detected planeAnchor, there is a probability to generate a food here every minute
     func GenerateFoodAccordingtoAllPlanes() {
         
-        // for every anchor
-        for planeAnchor in petAnchors {
-            
+        // for every anchorx
+        DispatchQueue.global(qos: .background).async {
+        
             //generate prob
             let prob = Float.random(in: 0.0...1.0)
-            
+    
             // if meet
-            if prob < probabilityOfFruit {
-                DispatchQueue.global().async {
-                    DispatchQueue.main.async {
-                        print("place an apple")
-                        
-                        // create a food node and added into scene
-                        let brain = Brain()
-                        brain.loadModel()
-                        
-                        let x_bias = Float.random(in: 0.0...0.4)
-                        let y_bias = Float.random(in: 0.0...1.0)
-                        let z_bias = Float.random(in: 0.0...0.4)
-                        brain.position = SCNVector3(x: planeAnchor.transform.columns.3.x + x_bias, y: planeAnchor.transform.columns.3.y + y_bias, z: planeAnchor.transform.columns.3.z + z_bias)
-                        
-                        brain.simdScale = simd_float3(10, 10, 10)
+            if prob < self.probabilityOfFruit {
+                
+                // if has already generated enough food
+                self.foodHasGenerated = self.foodHasGenerated + 1
+                if self.foodHasGenerated >= self.maxFood {return}
+                
+                // create a food node and added into scene
+                let brain = Brain()
+                brain.loadModel()
+                
+                print("place an apple")
+                brain.position = SCNVector3(x: self.randomPosition(lowerBound: -1.5, upperBound: 1.5), y: self.randomPosition(lowerBound: -1.5, upperBound: 1.5), z: -0.5)
+                
+                brain.simdScale = simd_float3(10, 10, 10)
 
-                        self.sceneView.scene.rootNode.addChildNode(brain)
-                    }
-                }
+                self.sceneView.scene.rootNode.addChildNode(brain)
             }
         }
-        
     }
     
     // create point, which is the ball, called whenever detected a plane
@@ -279,8 +291,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.curBallNode = ballNode
                 
                 // if has a pet, set the ball to be hidden
-                if let _ = self.curPetNode {
+                if self.foodGeneration == true {
                     self.curBallNode.isHidden = true
+                } else {
+                    self.points.append(ballNode)
                 }
             }
         }
@@ -304,7 +318,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 //if its a playing
                 if node.name == "Figure" {
                     node.removeFromParentNode()
-                    locatePet = true
+                    pet.touched()
                 }
                 
                 //if its a collection
@@ -348,28 +362,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             return
         }
         
-        DispatchQueue.global().async {
-            DispatchQueue.main.async {
-                if let node = self.curPetNode {
-                    node.removeFromParentNode()
-                }
-                
-                guard let plane = self.curAnchor else {
-                    print("No plane Available")
-                    return
-                }
-                
-                self.pet.loadModel()
-                
-                self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
-                self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
-                
-                self.sceneView.scene.rootNode.addChildNode(self.pet)
-                self.planeVisualizationParam = 0
-                self.curPetNode = self.pet
-                print("locate one")
+//        DispatchQueue.global().async {
+        DispatchQueue.main.async {
+            
+            self.pet.removeFromParentNode()
+            
+            guard let plane = self.curAnchor else {
+                print("No plane Available")
+                return
             }
+            
+            self.pet.loadModel()
+            
+            self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
+            self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
+            
+            self.sceneView.scene.rootNode.addChildNode(self.pet)
+            self.planeVisualizationParam = 0
+            print("locate one")
         }
+//        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
