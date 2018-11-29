@@ -17,6 +17,8 @@ class PetFigure: SCNNode {
     var fullness:Int = 0
     var happiness:Int = 0
     
+    var wrapperNode = SCNNode()
+    
     func eatFood(food: Food) {
         
         switch food.identifier {
@@ -33,11 +35,33 @@ class PetFigure: SCNNode {
         }
     }
     
-    func loadModel() {
-        //load ship
+    func touched() {
+        //change movement when
+        
+        wrapperNode.removeFromParentNode()
+        
         guard let virtualObjectScene = SCNScene(named: "art.scnassets/DanceFixed.dae") else {return}
         
-        let wrapperNode = SCNNode()
+        wrapperNode = SCNNode()
+        
+        for child in virtualObjectScene.rootNode.childNodes {
+            wrapperNode.addChildNode(child)
+        }
+        
+        self.addChildNode(wrapperNode)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+            self.loadModel()
+        })
+    }
+    
+    func loadModel() {
+        //load ship
+        wrapperNode.removeFromParentNode()
+        
+        guard let virtualObjectScene = SCNScene(named: "art.scnassets/Donothing.dae") else {return}
+        
+        wrapperNode = SCNNode()
         
         for child in virtualObjectScene.rootNode.childNodes {
             wrapperNode.addChildNode(child)
