@@ -145,9 +145,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             brain.loadModel()
             
             brain.position = SCNVector3(0,0,0)
-            
             brain.simdScale = simd_float3(10, 10, 10)
-            
             brain.isHidden = true
             
             sceneView.scene.rootNode.addChildNode(brain)
@@ -334,22 +332,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     
     // create point, which is the ball, called whenever detected a plane
     func createPoint(position: SCNVector3) {
-        if let ballNode = curBallNode {
-            ballNode.removeFromParentNode()
-        }
-        
         DispatchQueue.main.async {
-            let point = SCNSphere(radius: 0.005)
-            let ballNode = SCNNode(geometry: point)
-            ballNode.position = position
-            self.sceneView.scene.rootNode.addChildNode(ballNode)
-            self.curBallNode = ballNode
-            
-            // if has a pet, set the ball to be hidden
-            if self.foodGeneration == true {
-                self.curBallNode.isHidden = true
+            if let ballNode = self.curBallNode {
+                ballNode.position = position
+                if self.foodGeneration == true {
+                    ballNode.isHidden = true
+                }
             } else {
-                self.points.append(ballNode)
+                let point = SCNSphere(radius: 0.005)
+                let ballNode = SCNNode(geometry: point)
+                ballNode.position = position
+                self.sceneView.scene.rootNode.addChildNode(ballNode)
+                self.curBallNode = ballNode
             }
         }
         
@@ -373,10 +367,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 if node.name == "Figure" {
                     node.removeFromParentNode()
                     pet.touched()
-                }
-                
-                //if its a collection
-                if node.name == "brain" {
+                } else if node.name == "brain" {
                     DispatchQueue.main.async {
                         node.runAction(SCNAction.move(to: self.getTargetPlace(targetBox: self.pet), duration: 0.5))
                     }
@@ -385,6 +376,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                         node.removeFromParentNode()
                         self.updateFood(foodCategory: .brain, num: 1)
                     })
+                } else {
+                    // set other component visibility
                 }
             }
         }
@@ -463,7 +456,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     settingsLauncher.dismissFoodMenu()
                 }
             }
-        } else if let textureCollectionView = collectionView as? TextureCollectionView {
+        } else if let _ = collectionView as? TextureCollectionView {
             
             
         }
