@@ -68,5 +68,6 @@ class PetFigure: SCNNode {
         }
         
         self.addChildNode(wrapperNode)
+        
     }
 }
