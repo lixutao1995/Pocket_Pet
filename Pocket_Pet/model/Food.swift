@@ -10,6 +10,9 @@ import Foundation
 
 enum FoodCategory {
     case brain
+    case apple
+    case pokemon
+    case bone
 }
 
 struct Food {

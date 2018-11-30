@@ -50,7 +50,7 @@ class DisplayView: UIView {
     }
     
     private func setup() {
-        self.backgroundColor = UIColor(white: 0.9, alpha: 1)
+        self.backgroundColor = UIColor(white: 0.9, alpha: 0.2)
         self.valueView.backgroundColor = color
         self.addSubview(self.valueView)
     }

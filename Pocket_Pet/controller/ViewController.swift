@@ -39,7 +39,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     let pet = PetFigure()
     
     // food diction
-    var foods:[FoodCategory:Food] = [.brain:Food(foodCategory: .brain, count: 5)] {
+    var foods:[FoodCategory:Food]=[.brain:Food(foodCategory: .brain, count:5), .apple:Food(foodCategory: .apple, count : 15), .bone:Food(foodCategory: .bone, count : 10), .pokemon:Food(foodCategory: .pokemon, count: 3)]{
         didSet {
             updataFoodCollection()
         }
@@ -74,6 +74,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     
     //locatePet? boolean for determining whether to put pet into detected plane
     var locatePet:Bool = true
+    
+    
+    @IBAction func settingButton(_ sender: Any) {
+        let settingController=SettingViewController()
+        settingController.modalPresentationStyle = .custom
+        settingController.transitioningDelegate=self
+        present(settingController, animated: true, completion: nil)
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,10 +122,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         updataFoodCollection()
         
         fullnessBar.backgroundColor = UIColor.white
+        
+//        fullnessBar.alpha = 0.35
         fullnessBar.color = UIColor(red: 52/255.0, green: 152/255.0, blue: 219/255.0, alpha: 1.0)
         
-        happinessBar.backgroundColor = UIColor.white
-        happinessBar.color = UIColor(red: 230/255.0, green: 126/255.0, blue: 34/255.0, alpha: 1.0)
+        happinessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
+//        happinessBar.alpha = 0.35
+//        happinessBar.color = UIColor(red: 230/255.0, green: 126/255.0, blue: 34/255.0, alpha: 1.0)
+        happinessBar.color = UIColor(red: 234/255.0, green: 70/255.0, blue: 60/255.0, alpha: 1)
+        fullnessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
     }
     
     // surface click function, when clicked, put pet, enable food generation
@@ -435,5 +450,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
+    }
+}
+
+extension ViewController: UIViewControllerTransitioningDelegate{
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return PresentationViewController(presentedViewController: presented, presenting: presenting)
     }
 }

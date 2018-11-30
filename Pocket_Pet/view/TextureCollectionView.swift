@@ -9,7 +9,7 @@ import UIKit
 
 class TextureCollectionView: UICollectionView, UICollectionViewDataSource {
     
-    var textures: [Texture] = [Texture(textureCategory: .lucifer)]
+    var textures: [Texture] = [Texture(textureCategory: .hungry),Texture(textureCategory: .happy),Texture(textureCategory: .boring),Texture(textureCategory: .deadpool),Texture(textureCategory: .muhammer)]
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -22,7 +22,7 @@ class TextureCollectionView: UICollectionView, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -30,7 +30,7 @@ class TextureCollectionView: UICollectionView, UICollectionViewDataSource {
         // fix more than one movie content add to same cell
         cell.contentView.subviews.forEach({ $0.removeFromSuperview() })
         
-        let ind = indexPath.section * 3 + indexPath.row
+        let ind = indexPath.section * 5 + indexPath.row
         if ind < textures.count {
             let texture = textures[ind]
             
@@ -47,14 +47,23 @@ class TextureCollectionView: UICollectionView, UICollectionViewDataSource {
     
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return Int(ceil((Double(textures.count) / 3.0)))
+        return Int(ceil((Double(textures.count) / 5.0)))
     }
     
     func getImage(texture: Texture) -> UIImage{
         switch texture.identifier {
-        case .lucifer:
-            return UIImage(named: "lucifer")!
+        case .hungry:
+            return UIImage(named: "hungry_copy")!
+        case .deadpool:
+            return UIImage(named: "Deadpool_copy")!
+        case .happy:
+            return UIImage(named: "happy_copy")!
+        case .boring:
+            return UIImage(named: "boring_copy")!
+        case .muhammer:
+            return UIImage(named: "Muhammer_copy")!
         }
+        
         
     }
 }

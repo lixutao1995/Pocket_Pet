@@ -23,8 +23,17 @@ class PetFigure: SCNNode {
         
         switch food.identifier {
         case .brain:
+            fullness = fullness + 16
+            happiness = happiness + 20
+        case .apple:
+            fullness = fullness + 4
+            happiness = happiness + 8
+        case .pokemon:
             fullness = fullness + 10
-            happiness = happiness + 5
+            happiness = happiness + 15
+        case .bone:
+            fullness = fullness + 6
+            happiness = happiness + 12
         }
         
         if fullness > MAX_VALUE {
