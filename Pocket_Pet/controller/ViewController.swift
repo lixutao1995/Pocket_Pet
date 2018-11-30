@@ -38,6 +38,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     // current pet
     let pet = PetFigure()
     
+    // for avoiding repeatingly enter generate food
+    var preTime = 0
+    
     // food diction
     var foods:[FoodCategory:Food]=[.brain:Food(foodCategory: .brain, count:5), .apple:Food(foodCategory: .apple, count : 15), .bone:Food(foodCategory: .bone, count : 10), .pokemon:Food(foodCategory: .pokemon, count: 3)]{
         didSet {
@@ -61,16 +64,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     // food generation flag, started generation when enabled
     var foodGeneration:Bool = false
     
-    
     //create anchor list for placing, and scene light for display
     var petAnchors = [ARPlaneAnchor]()
     var sceneLight:SCNLight!
+    
+    // create a list, for avilable food node
+    var availableFood = [Brain]()
     
     // all the point node
     var points = [SCNNode]()
     
     // the prob of generate an apple in a plane when detected
-    let probabilityOfFruit:Float = 0.5
+    let probabilityOfFruit:Float = 1
     
     //locatePet? boolean for determining whether to put pet into detected plane
     var locatePet:Bool = true
@@ -133,6 +138,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         fullnessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
     }
     
+    // preload all food node
+    func preLoad(maxFood foodNum: Int) {
+        for _ in 0...maxFood {
+            let brain = Brain()
+            brain.loadModel()
+            
+            brain.position = SCNVector3(0,0,0)
+            
+            brain.simdScale = simd_float3(10, 10, 10)
+            
+            brain.isHidden = true
+            
+            sceneView.scene.rootNode.addChildNode(brain)
+            
+            availableFood.append(brain)
+        }
+        print("finish")
+    }
+    
     // surface click function, when clicked, put pet, enable food generation
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
@@ -148,6 +172,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        preLoad(maxFood: maxFood)
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
@@ -188,7 +214,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         
         // update food
         if Int(time) % timeInterval == 0 && foodGeneration == true {
-            GenerateFoodAccordingtoAllPlanes()
+            if preTime == Int(time) {
+                return
+            } else {
+                preTime = Int(time)
+            }
+            GenerateFood()
         }
     }
     
@@ -221,9 +252,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             
             // create ball indication
             createPoint(position: ballPosition)
-            
-            //print message
-            print("a plane detected")
             
             //add childnode into the return node
             node?.addChildNode(planeNode)
@@ -266,10 +294,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
     
     // for every detected planeAnchor, there is a probability to generate a food here every minute
-    func GenerateFoodAccordingtoAllPlanes() {
+    func GenerateFood() {
         
         // for every anchorx
-        DispatchQueue.global(qos: .background).async {
+        DispatchQueue.main.async {
         
             //generate prob
             let prob = Float.random(in: 0.0...1.0)
@@ -278,19 +306,28 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             if prob < self.probabilityOfFruit {
                 
                 // if has already generated enough food
-                self.foodHasGenerated = self.foodHasGenerated + 1
                 if self.foodHasGenerated >= self.maxFood {return}
+                self.foodHasGenerated = self.foodHasGenerated + 1
                 
-                // create a food node and added into scene
-                let brain = Brain()
-                brain.loadModel()
+                // get an available food node and added into scene
+                if self.availableFood.count <= 0 {
+                    print("No avaiable food node")
+                    return
+                }
                 
-                print("place an apple")
-                brain.position = SCNVector3(x: self.randomPosition(lowerBound: -1.5, upperBound: 1.5), y: self.randomPosition(lowerBound: -1.5, upperBound: 1.5), z: -0.5)
+                print("A brain")
                 
-                brain.simdScale = simd_float3(10, 10, 10)
-
-                self.sceneView.scene.rootNode.addChildNode(brain)
+                let node = self.availableFood.first!
+                
+                node.position = SCNVector3(x: self.randomPosition(lowerBound: -1.5, upperBound: 1.5), y: self.randomPosition(lowerBound: -1.5, upperBound: 1.5), z: -0.5)
+                
+                node.isHidden = false
+                
+                self.availableFood.remove(at: 0)
+                
+                if self.availableFood.count <= 0 {
+                    self.preLoad(maxFood: self.maxFood)
+                }
             }
         }
     }
@@ -301,20 +338,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             ballNode.removeFromParentNode()
         }
         
-        DispatchQueue.global().async {
-            DispatchQueue.main.async {
-                let point = SCNSphere(radius: 0.005)
-                let ballNode = SCNNode(geometry: point)
-                ballNode.position = position
-                self.sceneView.scene.rootNode.addChildNode(ballNode)
-                self.curBallNode = ballNode
-                
-                // if has a pet, set the ball to be hidden
-                if self.foodGeneration == true {
-                    self.curBallNode.isHidden = true
-                } else {
-                    self.points.append(ballNode)
-                }
+        DispatchQueue.main.async {
+            let point = SCNSphere(radius: 0.005)
+            let ballNode = SCNNode(geometry: point)
+            ballNode.position = position
+            self.sceneView.scene.rootNode.addChildNode(ballNode)
+            self.curBallNode = ballNode
+            
+            // if has a pet, set the ball to be hidden
+            if self.foodGeneration == true {
+                self.curBallNode.isHidden = true
+            } else {
+                self.points.append(ballNode)
             }
         }
         
@@ -342,13 +377,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 
                 //if its a collection
                 if node.name == "brain" {
-                    node.removeFromParentNode()
-                    updateFood(foodCategory: .brain, num: 1)
+                    DispatchQueue.main.async {
+                        node.runAction(SCNAction.move(to: self.getTargetPlace(targetBox: self.pet), duration: 0.5))
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                        self.foodHasGenerated = self.foodHasGenerated - 1
+                        node.removeFromParentNode()
+                        self.updateFood(foodCategory: .brain, num: 1)
+                    })
                 }
             }
         }
     }
     
+    // update food number when action happens
     private func updateFood(foodCategory: FoodCategory, num: Int) {
         if var curFood = foods[foodCategory] {
             curFood.count = curFood.count + num
@@ -372,6 +414,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     // food collection view update
     func updataFoodCollection() {
         settingsLauncher.foodCollectionView.food = foods
+    }
+    
+    // get the target box bounding
+    func getTargetPlace(targetBox target: PetFigure) -> SCNVector3 {
+        return SCNVector3(0,2,0)
     }
     
     //add object will be called when plane detected, put into currentPetAnchor
