@@ -10,7 +10,22 @@ import UIKit
 
 class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     
-    var food: [FoodCategory:Food] = [.brain:Food(foodCategory: .brain)]
+    var food: [FoodCategory:Food] = [.brain:Food(foodCategory: .brain), .apple:Food(foodCategory: .apple), .bone:Food(foodCategory: .bone), .pokemon:Food(foodCategory: .pokemon)] {
+        didSet {
+            setNeedsDisplay()
+            updateLabel()
+        }
+    }
+    
+    var labelDic: [UILabel: FoodCategory] = [:]
+    
+    private func updateLabel() {
+        for label in labelDic.keys {
+            let cate = labelDic[label]!
+            let count = food[cate]!.count
+            label.text = "x\(count)"
+        }
+    }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -47,6 +62,7 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
             label.numberOfLines = 1
             label.text = "x\(curFood.count)"
             cell.addSubview(label)
+            labelDic[label] = curFood.identifier
         }
         
         return cell
@@ -59,8 +75,14 @@ class FoodCollectionView: UICollectionView, UICollectionViewDataSource {
     
     func getImage(food: Food) -> UIImage{
         switch food.identifier {
-            case .brain:
-                return UIImage(named: "brain")!
+        case .brain:
+            return UIImage(named: "brain")!
+        case .apple:
+            return UIImage(named: "apple")!
+        case .pokemon:
+            return UIImage(named: "pokemon")!
+        case .bone:
+            return UIImage(named: "bone")!
         }
         
     }
