@@ -237,7 +237,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             createPoint(position: ballPosition)
             
             //add childnode into the return node
-//            node?.addChildNode(planeNode)
+            node?.addChildNode(planeNode)
             petAnchors.append(planeAnchor)
         }
         
