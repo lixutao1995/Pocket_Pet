@@ -19,13 +19,7 @@ class SettingViewController: UIViewController {
         print(num)
     }
     
-    @IBAction func colorSlider(_ sender: UISlider) {
-        temp=Double(sender.value)
-        red=temp*255
-        green=temp*255
-        blue=temp*255
-        print(temp)
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -112,7 +112,7 @@
                                 </constraints>
                                 <state key="normal" title="figure" image="figure"/>
                                 <connections>
-                                    <action selector="popUpTextureMenu:" destination="BV1-FR-VrT" eventType="touchUpInside" id="ClQ-Hp-9B3"/>
+                                    <action selector="popUpTextureMenu:" destination="BV1-FR-VrT" eventType="touchUpInside" id="dsf-wB-hbO"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="aMI-dN-iwQ">
@@ -147,7 +147,7 @@
                                 </constraints>
                                 <state key="normal" title="Button" image="setting"/>
                                 <connections>
-                                    <action selector="settingButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="kOR-I6-y2M"/>
+                                    <action selector="popUpSetting:" destination="BV1-FR-VrT" eventType="touchUpInside" id="x8k-gK-FCs"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -187,10 +187,10 @@
         </scene>
     </scenes>
     <resources>
-        <image name="figure" width="48" height="48"/>
-        <image name="fullness" width="96" height="96"/>
-        <image name="happiness" width="100" height="100"/>
-        <image name="setting" width="512" height="512"/>
-        <image name="skullpack" width="48" height="48"/>
+        <image name="figure" width="72" height="72"/>
+        <image name="fullness" width="203.29411315917969" height="203.29411315917969"/>
+        <image name="happiness" width="75" height="75"/>
+        <image name="setting" width="72" height="72"/>
+        <image name="skullpack" width="72" height="72"/>
     </resources>
 </document>
