@@ -42,7 +42,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var preTime = 0
     
     // food diction
-    var foods:[FoodCategory:Food] = [.brain:Food(foodCategory: .brain, count: 5)] {
+    var foods:[FoodCategory:Food]=[.brain:Food(foodCategory: .brain, count:5), .apple:Food(foodCategory: .apple, count : 15), .bone:Food(foodCategory: .bone, count : 10), .pokemon:Food(foodCategory: .pokemon, count: 3)]{
         didSet {
             updataFoodCollection()
         }
@@ -79,6 +79,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     
     //locatePet? boolean for determining whether to put pet into detected plane
     var locatePet:Bool = true
+    
+    
+    @IBAction func settingButton(_ sender: Any) {
+        let settingController=SettingViewController()
+        settingController.modalPresentationStyle = .custom
+        settingController.transitioningDelegate=self
+        present(settingController, animated: true, completion: nil)
+        
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -117,10 +127,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         updataFoodCollection()
         
         fullnessBar.backgroundColor = UIColor.white
+        
+//        fullnessBar.alpha = 0.35
         fullnessBar.color = UIColor(red: 52/255.0, green: 152/255.0, blue: 219/255.0, alpha: 1.0)
         
-        happinessBar.backgroundColor = UIColor.white
-        happinessBar.color = UIColor(red: 230/255.0, green: 126/255.0, blue: 34/255.0, alpha: 1.0)
+        happinessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
+//        happinessBar.alpha = 0.35
+//        happinessBar.color = UIColor(red: 230/255.0, green: 126/255.0, blue: 34/255.0, alpha: 1.0)
+        happinessBar.color = UIColor(red: 234/255.0, green: 70/255.0, blue: 60/255.0, alpha: 1)
+        fullnessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
+        updateBars()
     }
     
     // preload all food node
@@ -130,9 +146,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             brain.loadModel()
             
             brain.position = SCNVector3(0,0,0)
-            
             brain.simdScale = simd_float3(10, 10, 10)
-            
             brain.isHidden = true
             
             sceneView.scene.rootNode.addChildNode(brain)
@@ -284,6 +298,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // for every anchorx
         DispatchQueue.main.async {
         
+            self.pet.decreaseFullness(degree: 10)
+            
+            //            sleep(5)
+            self.pet.decreaseHappiness(degree: 5)
+            self.updateBars()
+            
             //generate prob
             let prob = Float.random(in: 0.0...1.0)
     
@@ -314,27 +334,25 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     self.preLoad(maxFood: self.maxFood)
                 }
             }
+            
+            
         }
     }
     
     // create point, which is the ball, called whenever detected a plane
     func createPoint(position: SCNVector3) {
-        if let ballNode = curBallNode {
-            ballNode.removeFromParentNode()
-        }
-        
         DispatchQueue.main.async {
-            let point = SCNSphere(radius: 0.005)
-            let ballNode = SCNNode(geometry: point)
-            ballNode.position = position
-            self.sceneView.scene.rootNode.addChildNode(ballNode)
-            self.curBallNode = ballNode
-            
-            // if has a pet, set the ball to be hidden
-            if self.foodGeneration == true {
-                self.curBallNode.isHidden = true
+            if let ballNode = self.curBallNode {
+                ballNode.position = position
+                if self.foodGeneration == true {
+                    ballNode.isHidden = true
+                }
             } else {
-                self.points.append(ballNode)
+                let point = SCNSphere(radius: 0.005)
+                let ballNode = SCNNode(geometry: point)
+                ballNode.position = position
+                self.sceneView.scene.rootNode.addChildNode(ballNode)
+                self.curBallNode = ballNode
             }
         }
         
@@ -358,10 +376,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 if node.name == "Figure" {
                     node.removeFromParentNode()
                     pet.touched()
-                }
-                
-                //if its a collection
-                if node.name == "brain" {
+                } else if node.name == "brain" {
                     DispatchQueue.main.async {
                         node.runAction(SCNAction.move(to: self.getTargetPlace(targetBox: self.pet), duration: 0.5))
                     }
@@ -370,6 +385,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                         node.removeFromParentNode()
                         self.updateFood(foodCategory: .brain, num: 1)
                     })
+                } else {
+                    // set other component visibility
                 }
             }
         }
@@ -423,7 +440,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 return
             }
             
-            self.pet.loadModel()
+            self.pet.show()
             
             self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
             self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
@@ -448,7 +465,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     settingsLauncher.dismissFoodMenu()
                 }
             }
-        } else if let textureCollectionView = collectionView as? TextureCollectionView {
+        } else if let _ = collectionView as? TextureCollectionView {
             
             
         }
@@ -482,5 +499,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
+    }
+}
+
+extension ViewController: UIViewControllerTransitioningDelegate{
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return PresentationViewController(presentedViewController: presented, presenting: presenting)
     }
 }

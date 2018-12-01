@@ -8,7 +8,11 @@
 import Foundation
 
 enum TextureCategory {
-    case lucifer
+    case hungry
+    case deadpool
+    case happy
+    case boring
+    case muhammer
 }
 
 struct Texture {
