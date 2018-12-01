@@ -12,7 +12,7 @@ class PresentationViewController: UIPresentationController {
     override func containerViewWillLayoutSubviews() {
         super.containerViewWillLayoutSubviews()
         let window = UIApplication.shared.keyWindow
-        presentedView?.frame=CGRect(x: 0, y: (window?.frame.height)!*2/3, width: (window?.frame.width)!, height: (window?.frame.height)!/3)
+        presentedView?.frame=CGRect(x: 0, y: (window?.frame.height)!*5/6, width: (window?.frame.width)!, height: (window?.frame.height)!/6)
 //        presentedView?.frame=CGRect(x: 100, y: 55, width: 100, height: 100)
         setupCover()
     }
