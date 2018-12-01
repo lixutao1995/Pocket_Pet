@@ -130,9 +130,9 @@ class PetFigure: SCNNode {
         
         self.addChildNode(wrapperNode)
         
-        let playDuration = Int.random(in: 7...10)
+//        let playDuration = Int.random(in: 7...10)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(playDuration), execute: {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3) + 0.5, execute: {
             self.loadModel()
         })
     }
