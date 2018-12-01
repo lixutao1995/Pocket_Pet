@@ -11,7 +11,7 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDelegate {
-    
+    var isPresented: Bool=false
     @IBOutlet var sceneView: ARSCNView!
     //for put a pet
     @IBOutlet weak var surfaceButton: UIButton!
@@ -506,4 +506,63 @@ extension ViewController: UIViewControllerTransitioningDelegate{
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return PresentationViewController(presentedViewController: presented, presenting: presenting)
     }
+
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        isPresented=true
+        return self
+        
+    }
+    
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        isPresented=false
+        return self
+    }
+    
+}
+extension ViewController: UIViewControllerAnimatedTransitioning{
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 0.3
+    }
+//    func animationf
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        
+        isPresented ? animationForPresentedView( transitionContext: transitionContext) : animationForDismissedView( transitionContext: transitionContext)
+        
+        
+    }
+    private func animationForPresentedView(transitionContext: UIViewControllerContextTransitioning){
+        let presentedView=transitionContext.view(forKey: UITransitionContextViewKey.to)!
+        transitionContext.containerView.addSubview(presentedView)
+        //        presentedView.transform=__CGAffineTransformMake(1.0, 0.0)
+       
+        presentedView.layer.anchorPoint=CGPoint(x: 1, y: 0.5)
+        presentedView.transform=CGAffineTransform(scaleX: 0,y: 0.5)
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+            ()->Void in
+            presentedView.transform=CGAffineTransform.identity
+        }) {
+            (_)->Void in
+            transitionContext.completeTransition(true)
+        }
+    }
+    private func animationForDismissedView(transitionContext: UIViewControllerContextTransitioning){
+        
+        
+        let dismissView=transitionContext.view(forKey: UITransitionContextViewKey.from)!
+//        transitionContext.containerView.addSubview(dismissView)
+        //        presentedView.transform=__CGAffineTransformMake(1.0, 0.0)
+        
+        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+            ()->Void in
+            dismissView.transform=CGAffineTransform(scaleX: 0.00001,y: 0.5)
+        }) {
+            (_)->Void in
+           
+           
+                dismissView.removeFromSuperview()
+            transitionContext.completeTransition(true)
+        }
+    }
+    
+//    private func
 }
