@@ -413,6 +413,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         settingsLauncher.showTextureMenu()
     }
     
+    
+    @IBAction func popUpSetting(_ sender: UIButton) {
+        settingsLauncher.showSetting()
+    }
+    
     // food collection view update
     func updataFoodCollection() {
         settingsLauncher.foodCollectionView.food = foods
@@ -518,6 +523,7 @@ extension ViewController: UIViewControllerTransitioningDelegate{
         return self
     }
     
+    
 }
 extension ViewController: UIViewControllerAnimatedTransitioning{
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -531,37 +537,39 @@ extension ViewController: UIViewControllerAnimatedTransitioning{
         
     }
     private func animationForPresentedView(transitionContext: UIViewControllerContextTransitioning){
-        let presentedView=transitionContext.view(forKey: UITransitionContextViewKey.to)!
-        transitionContext.containerView.addSubview(presentedView)
+        let presentedView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+//        transitionContext.containerView.addSubview(presentedView)
         //        presentedView.transform=__CGAffineTransformMake(1.0, 0.0)
        
-        presentedView.layer.anchorPoint=CGPoint(x: 1, y: 0.5)
-        presentedView.transform=CGAffineTransform(scaleX: 0,y: 0.5)
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
-            ()->Void in
-            presentedView.transform=CGAffineTransform.identity
-        }) {
-            (_)->Void in
-            transitionContext.completeTransition(true)
-        }
+//        presentedView.layer.anchorPoint=CGPoint(x: 1, y: 1)
+//        presentedView.transform=CGAffineTransform(scaleX: 1,y: 0.5)
+//        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+//            ()->Void in
+//            presentedView.transform=CGAffineTransform.identity
+//        }) {
+//            (_)->Void in
+//            transitionContext.completeTransition(true)
+//        }
+//        settingsLauncher.showSetting(view: presentedView)
     }
     private func animationForDismissedView(transitionContext: UIViewControllerContextTransitioning){
         
         
-        let dismissView=transitionContext.view(forKey: UITransitionContextViewKey.from)!
+        let dismissView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
 //        transitionContext.containerView.addSubview(dismissView)
         //        presentedView.transform=__CGAffineTransformMake(1.0, 0.0)
         
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
-            ()->Void in
-            dismissView.transform=CGAffineTransform(scaleX: 0.00001,y: 0.5)
-        }) {
-            (_)->Void in
-           
-           
-                dismissView.removeFromSuperview()
-            transitionContext.completeTransition(true)
-        }
+//        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+//            ()->Void in
+//            dismissView.transform=CGAffineTransform(scaleX: 0.00001,y: 0.5)
+//        }) {
+//            (_)->Void in
+//
+//
+//                dismissView.removeFromSuperview()
+//            transitionContext.completeTransition(true)
+//        }
+//        settingsLauncher.dismissSetting(view: dismissView)
     }
     
 //    private func
