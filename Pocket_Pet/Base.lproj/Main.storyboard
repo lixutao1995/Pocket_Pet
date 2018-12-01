@@ -85,9 +85,9 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lsZ-YW-DXg">
-                                <rect key="frame" x="160.5" y="617" width="54" height="30"/>
-                                <state key="normal" title="Surface">
-                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="153" y="617" width="69" height="30"/>
+                                <state key="normal" title="SUMMON">
+                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <action selector="SurfaceClicked:" destination="BV1-FR-VrT" eventType="touchUpInside" id="q29-p2-Fi3"/>
@@ -150,6 +150,16 @@
                                     <action selector="popUpSetting:" destination="BV1-FR-VrT" eventType="touchUpInside" id="x8k-gK-FCs"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WPf-yk-KWe">
+                                <rect key="frame" x="164" y="579" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="RESET">
+                                    <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetPet:" destination="BV1-FR-VrT" eventType="touchUpInside" id="2Gw-d3-86s"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -175,10 +185,17 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="RESET" destination="WPf-yk-KWe" id="uk9-um-4dQ"/>
+                        <outlet property="SUMMON" destination="lsZ-YW-DXg" id="KRb-Xu-jqf"/>
+                        <outlet property="foodButton" destination="u56-80-4jP" id="VHz-26-rUa"/>
+                        <outlet property="fullIcon" destination="qsr-5p-yLB" id="qfd-WK-G25"/>
                         <outlet property="fullnessBar" destination="Pdp-Hf-WRN" id="TNk-2f-NDc"/>
                         <outlet property="happinessBar" destination="Ait-wU-Wgp" id="Yjo-07-8ER"/>
+                        <outlet property="happyIcon" destination="Me8-ma-WZa" id="m6R-Ej-67m"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="settingButton" destination="qMN-In-JD8" id="NjH-K0-yP5"/>
                         <outlet property="surfaceButton" destination="lsZ-YW-DXg" id="iLH-Ip-JkF"/>
+                        <outlet property="textureButton" destination="2OI-R2-fhv" id="yO9-ma-vd0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
