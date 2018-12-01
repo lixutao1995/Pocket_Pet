@@ -169,7 +169,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     @IBOutlet var settingButton: UIButton!
     @IBOutlet var fullIcon: UIImageView!
     @IBOutlet var happyIcon: UIImageView!
-    
+    @IBOutlet var RESET: UIButton!
+    @IBOutlet var SUMMON: UIButton!
     
     private func hiddeOrShowButtons(petNotYetPlaced: Bool) {
         happinessBar.isHidden = petNotYetPlaced
@@ -179,8 +180,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         settingButton.isHidden = petNotYetPlaced
         fullIcon.isHidden = petNotYetPlaced
         happyIcon.isHidden = petNotYetPlaced
+        SUMMON.isHidden = !petNotYetPlaced
+        RESET.isHidden = petNotYetPlaced
         
     }
+    
+    @IBAction func resetPet(_ sender: UIButton) {
+        self.pet.removeFromParentNode()
+        petNotYetPlaced = true
+    }
+    
     
     // surface click function, when clicked, put pet, enable food generation
     @IBAction func SurfaceClicked(_ sender: Any) {
@@ -464,7 +473,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //        DispatchQueue.global().async {
         DispatchQueue.main.async {
             
-            self.pet.removeFromParentNode()
+//            self.pet.removeFromParentNode()
             
             guard let plane = self.curAnchor else {
                 print("No plane Available")
