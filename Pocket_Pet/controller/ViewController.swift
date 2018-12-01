@@ -136,6 +136,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //        happinessBar.color = UIColor(red: 230/255.0, green: 126/255.0, blue: 34/255.0, alpha: 1.0)
         happinessBar.color = UIColor(red: 234/255.0, green: 70/255.0, blue: 60/255.0, alpha: 1)
         fullnessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
+        updateBars()
     }
     
     // preload all food node
@@ -297,6 +298,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // for every anchorx
         DispatchQueue.main.async {
         
+            self.pet.decreaseFullness(degree: 10)
+            
+            //            sleep(5)
+            self.pet.decreaseHappiness(degree: 5)
+            self.updateBars()
+            
             //generate prob
             let prob = Float.random(in: 0.0...1.0)
     
@@ -327,6 +334,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     self.preLoad(maxFood: self.maxFood)
                 }
             }
+            
+            
         }
     }
     
@@ -431,7 +440,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 return
             }
             
-            self.pet.loadModel()
+            self.pet.show()
             
             self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
             self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
