@@ -10,6 +10,7 @@
 		2D89431721B0DB1900A11DA1 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D89431521B0DB1900A11DA1 /* SettingViewController.swift */; };
 		2D89431821B0DB1900A11DA1 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D89431621B0DB1900A11DA1 /* SettingViewController.xib */; };
 		2D89431A21B0E2F400A11DA1 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D89431921B0E2F400A11DA1 /* PresentationViewController.swift */; };
+		7801B3DC21B242F0001DD8D6 /* BackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7801B3DB21B242F0001DD8D6 /* BackgroundMusic.mp3 */; };
 		7813FE53219B8AB700FAF569 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE52219B8AB700FAF569 /* AppDelegate.swift */; };
 		7813FE55219B8AB700FAF569 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 7813FE54219B8AB700FAF569 /* art.scnassets */; };
 		7813FE57219B8AB700FAF569 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE56219B8AB700FAF569 /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 		783B8B7A219E7C7700A9812B /* PetFigure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B79219E7C7700A9812B /* PetFigure.swift */; };
 		783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */; };
 		789A800D21AB44360052A0CB /* Brain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789A800C21AB44360052A0CB /* Brain.swift */; };
+		8A3D4A2521B235280020B53A /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3D4A2421B235280020B53A /* SettingView.swift */; };
 		8A8113A721ACB7AB005A0158 /* SettingsLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113A621ACB7AB005A0158 /* SettingsLauncher.swift */; };
 		8A8113AA21ACB9E9005A0158 /* FoodCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */; };
 		8A8113AC21ACBAD3005A0158 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8113AB21ACBAD3005A0158 /* Food.swift */; };
@@ -50,6 +52,7 @@
 		2D89431521B0DB1900A11DA1 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2D89431621B0DB1900A11DA1 /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
 		2D89431921B0E2F400A11DA1 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
+		7801B3DB21B242F0001DD8D6 /* BackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BackgroundMusic.mp3; sourceTree = "<group>"; };
 		7813FE4F219B8AB700FAF569 /* Pocket_Pet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pocket_Pet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7813FE52219B8AB700FAF569 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7813FE54219B8AB700FAF569 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -67,6 +70,7 @@
 		783B8B79219E7C7700A9812B /* PetFigure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetFigure.swift; sourceTree = "<group>"; };
 		783B8B7B21A9F49D00A9812B /* EnrtyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnrtyViewController.swift; sourceTree = "<group>"; };
 		789A800C21AB44360052A0CB /* Brain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Brain.swift; sourceTree = "<group>"; };
+		8A3D4A2421B235280020B53A /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		8A8113A621ACB7AB005A0158 /* SettingsLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsLauncher.swift; sourceTree = "<group>"; };
 		8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodCollectionView.swift; sourceTree = "<group>"; };
 		8A8113AB21ACBAD3005A0158 /* Food.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
@@ -130,6 +134,7 @@
 				7813FE54219B8AB700FAF569 /* art.scnassets */,
 				7813FE58219B8AB700FAF569 /* Main.storyboard */,
 				7813FE5B219B8AB800FAF569 /* Assets.xcassets */,
+				7801B3DB21B242F0001DD8D6 /* BackgroundMusic.mp3 */,
 				7813FE5D219B8AB800FAF569 /* LaunchScreen.storyboard */,
 				7813FE60219B8AB800FAF569 /* Info.plist */,
 			);
@@ -184,6 +189,7 @@
 				8A8113A921ACB9E9005A0158 /* FoodCollectionView.swift */,
 				8A8113AD21ACDC96005A0158 /* DisplayView.swift */,
 				8A8113AF21ACF289005A0158 /* TextureCollectionView.swift */,
+				8A3D4A2421B235280020B53A /* SettingView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -256,6 +262,11 @@
 				TargetAttributes = {
 					7813FE4E219B8AB700FAF569 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					7813FE64219B8AB800FAF569 = {
 						CreatedOnToolsVersion = 10.1;
@@ -292,6 +303,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7801B3DC21B242F0001DD8D6 /* BackgroundMusic.mp3 in Resources */,
 				7813FE55219B8AB700FAF569 /* art.scnassets in Resources */,
 				2D89431821B0DB1900A11DA1 /* SettingViewController.xib in Resources */,
 				7813FE5F219B8AB800FAF569 /* LaunchScreen.storyboard in Resources */,
@@ -324,6 +336,7 @@
 				8A8113AE21ACDC96005A0158 /* DisplayView.swift in Sources */,
 				789A800D21AB44360052A0CB /* Brain.swift in Sources */,
 				783B8B7A219E7C7700A9812B /* PetFigure.swift in Sources */,
+				8A3D4A2521B235280020B53A /* SettingView.swift in Sources */,
 				8A8113A721ACB7AB005A0158 /* SettingsLauncher.swift in Sources */,
 				8A8113AA21ACB9E9005A0158 /* FoodCollectionView.swift in Sources */,
 				783B8B7C21A9F49D00A9812B /* EnrtyViewController.swift in Sources */,

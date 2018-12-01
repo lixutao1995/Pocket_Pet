@@ -27,6 +27,12 @@ class SettingsLauncher: NSObject {
         return cv
     }()
     
+    let settingView: SettingView = {
+        let cv = SettingView(frame: .zero)
+        cv.backgroundColor = UIColor.white
+        return cv
+    }()
+    
     override init() {
         super.init()
     }
@@ -36,7 +42,7 @@ class SettingsLauncher: NSObject {
             
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             
-        
+            
             blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissFoodMenu)))
             
             let height: CGFloat = 200
@@ -63,6 +69,48 @@ class SettingsLauncher: NSObject {
             
         }
         
+    }
+    
+    func showSetting() {
+        
+        if let window = UIApplication.shared.keyWindow {
+            
+            blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+            
+            
+            blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissSetting)))
+            
+            let width: CGFloat = window.frame.width * 2/3
+            let x = window.frame.width - width
+            
+            window.addSubview(blackView)
+            window.addSubview(settingView)
+            settingView.frame = CGRect(x: window.frame.width, y: 0, width: width, height: window.frame.height)
+            
+            
+            blackView.frame = window.frame
+            blackView.alpha = 0
+            
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                
+                self.blackView.alpha = 1
+                self.settingView.frame = CGRect(x: x, y: 0, width: width, height: window.frame.height)
+                
+            }, completion: nil)
+            
+            
+        }
+    }
+    
+    @objc func dismissSetting() {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.blackView.alpha = 0
+            
+            if let window = UIApplication.shared.keyWindow {
+                self.settingView.frame = CGRect(x: window.frame.width, y: 0, width: self.settingView.frame.width, height: self.settingView.frame.height)
+            }
+        })
     }
     
     @objc func dismissFoodMenu() {

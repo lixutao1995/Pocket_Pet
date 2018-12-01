@@ -9,6 +9,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import AVFoundation
 
 class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDelegate {
     var isPresented: Bool=false
@@ -89,9 +90,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         
     }
     
-    
+    var player: AVAudioPlayer = AVAudioPlayer()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -136,6 +139,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //        happinessBar.color = UIColor(red: 230/255.0, green: 126/255.0, blue: 34/255.0, alpha: 1.0)
         happinessBar.color = UIColor(red: 234/255.0, green: 70/255.0, blue: 60/255.0, alpha: 1)
         fullnessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
+        updateBars()
+        
+        hiddeOrShowButtons(petNotYetPlaced: true)
     }
     
     // preload all food node
@@ -155,10 +161,43 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         print("finish")
     }
     
+    var petNotYetPlaced: Bool = true {
+        didSet {
+            hiddeOrShowButtons(petNotYetPlaced: petNotYetPlaced)
+        }
+    }
+    
+    @IBOutlet var foodButton: UIButton!
+    @IBOutlet var textureButton: UIButton!
+    @IBOutlet var settingButton: UIButton!
+    @IBOutlet var fullIcon: UIImageView!
+    @IBOutlet var happyIcon: UIImageView!
+    @IBOutlet var RESET: UIButton!
+    @IBOutlet var SUMMON: UIButton!
+    
+    private func hiddeOrShowButtons(petNotYetPlaced: Bool) {
+        happinessBar.isHidden = petNotYetPlaced
+        fullnessBar.isHidden = petNotYetPlaced
+        foodButton.isHidden = petNotYetPlaced
+        textureButton.isHidden = petNotYetPlaced
+        settingButton.isHidden = petNotYetPlaced
+        fullIcon.isHidden = petNotYetPlaced
+        happyIcon.isHidden = petNotYetPlaced
+        SUMMON.isHidden = !petNotYetPlaced
+        RESET.isHidden = petNotYetPlaced
+        
+    }
+    
+    @IBAction func resetPet(_ sender: UIButton) {
+        self.pet.removeFromParentNode()
+        petNotYetPlaced = true
+    }
+    
+    
     // surface click function, when clicked, put pet, enable food generation
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
-        addPet()
+        petNotYetPlaced = addPet()
         foodGeneration = true
         
         // set all points to be invisible
@@ -168,10 +207,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
     
+    func playMusic() {
+        let audiopath = Bundle.main.path(forResource: "BackgroundMusic", ofType: "mp3")
+        do{
+            try player = AVAudioPlayer(contentsOf: URL(fileURLWithPath: audiopath!))
+        }
+        catch{
+            //error
+            print("error")
+        }
+        do{
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        }
+        catch{
+            //error
+        }
+        player.play()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         preLoad(maxFood: maxFood)
+        
+        playMusic()
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
@@ -297,6 +357,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // for every anchorx
         DispatchQueue.main.async {
         
+            self.pet.decreaseFullness(degree: 10)
+            
+            //            sleep(5)
+            self.pet.decreaseHappiness(degree: 5)
+            self.updateBars()
+            
             //generate prob
             let prob = Float.random(in: 0.0...1.0)
     
@@ -327,6 +393,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     self.preLoad(maxFood: self.maxFood)
                 }
             }
+            
+            
         }
     }
     
@@ -404,6 +472,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         settingsLauncher.showTextureMenu()
     }
     
+    
+    @IBAction func popUpSetting(_ sender: UIButton) {
+        settingsLauncher.showSetting()
+    }
+    
     // food collection view update
     func updataFoodCollection() {
         settingsLauncher.foodCollectionView.food = foods
@@ -415,23 +488,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
     
     //add object will be called when plane detected, put into currentPetAnchor
-    func addPet() {
+    func addPet() -> Bool {
         if petAnchors.count <= 0 {
             print("no available anchor or already have a pet located")
-            return
+            return true
         }
         
 //        DispatchQueue.global().async {
         DispatchQueue.main.async {
             
-            self.pet.removeFromParentNode()
+//            self.pet.removeFromParentNode()
             
             guard let plane = self.curAnchor else {
                 print("No plane Available")
                 return
             }
             
-            self.pet.loadModel()
+            self.pet.show()
             
             self.pet.position = SCNVector3(x: plane.transform.columns.3.x, y: plane.transform.columns.3.y, z: plane.transform.columns.3.z)
             self.pet.simdScale = simd_float3(0.1, 0.1, 0.1)
@@ -440,6 +513,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.planeVisualizationParam = 0
             print("locate one")
         }
+        return false
 //        }
     }
     
@@ -509,6 +583,7 @@ extension ViewController: UIViewControllerTransitioningDelegate{
         return self
     }
     
+    
 }
 extension ViewController: UIViewControllerAnimatedTransitioning{
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -522,37 +597,39 @@ extension ViewController: UIViewControllerAnimatedTransitioning{
         
     }
     private func animationForPresentedView(transitionContext: UIViewControllerContextTransitioning){
-        let presentedView=transitionContext.view(forKey: UITransitionContextViewKey.to)!
-        transitionContext.containerView.addSubview(presentedView)
+        let presentedView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
+//        transitionContext.containerView.addSubview(presentedView)
         //        presentedView.transform=__CGAffineTransformMake(1.0, 0.0)
        
-        presentedView.layer.anchorPoint=CGPoint(x: 1, y: 0.5)
-        presentedView.transform=CGAffineTransform(scaleX: 0,y: 0.5)
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
-            ()->Void in
-            presentedView.transform=CGAffineTransform.identity
-        }) {
-            (_)->Void in
-            transitionContext.completeTransition(true)
-        }
+//        presentedView.layer.anchorPoint=CGPoint(x: 1, y: 1)
+//        presentedView.transform=CGAffineTransform(scaleX: 1,y: 0.5)
+//        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+//            ()->Void in
+//            presentedView.transform=CGAffineTransform.identity
+//        }) {
+//            (_)->Void in
+//            transitionContext.completeTransition(true)
+//        }
+//        settingsLauncher.showSetting(view: presentedView)
     }
     private func animationForDismissedView(transitionContext: UIViewControllerContextTransitioning){
         
         
-        let dismissView=transitionContext.view(forKey: UITransitionContextViewKey.from)!
+        let dismissView = transitionContext.view(forKey: UITransitionContextViewKey.from)!
 //        transitionContext.containerView.addSubview(dismissView)
         //        presentedView.transform=__CGAffineTransformMake(1.0, 0.0)
         
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
-            ()->Void in
-            dismissView.transform=CGAffineTransform(scaleX: 0.00001,y: 0.5)
-        }) {
-            (_)->Void in
-           
-           
-                dismissView.removeFromSuperview()
-            transitionContext.completeTransition(true)
-        }
+//        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+//            ()->Void in
+//            dismissView.transform=CGAffineTransform(scaleX: 0.00001,y: 0.5)
+//        }) {
+//            (_)->Void in
+//
+//
+//                dismissView.removeFromSuperview()
+//            transitionContext.completeTransition(true)
+//        }
+//        settingsLauncher.dismissSetting(view: dismissView)
     }
     
 //    private func
