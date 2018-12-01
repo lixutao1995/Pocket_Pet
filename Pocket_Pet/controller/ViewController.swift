@@ -9,6 +9,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import AVFoundation
 
 class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDelegate {
     
@@ -89,9 +90,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         
     }
     
-    
+    var player: AVAudioPlayer = AVAudioPlayer()
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         // Set the view's delegate
         sceneView.delegate = self
@@ -169,10 +172,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
     
+    func playMusic() {
+        let audiopath = Bundle.main.path(forResource: "BackgroundMusic", ofType: "mp3")
+        do{
+            try player = AVAudioPlayer(contentsOf: URL(fileURLWithPath: audiopath!))
+        }
+        catch{
+            //error
+            print("error")
+        }
+        do{
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setActive(true)
+        }
+        catch{
+            //error
+        }
+        player.play()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         preLoad(maxFood: maxFood)
+        
+        playMusic()
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()

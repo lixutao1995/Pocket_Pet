@@ -10,6 +10,7 @@
 		2D89431721B0DB1900A11DA1 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D89431521B0DB1900A11DA1 /* SettingViewController.swift */; };
 		2D89431821B0DB1900A11DA1 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2D89431621B0DB1900A11DA1 /* SettingViewController.xib */; };
 		2D89431A21B0E2F400A11DA1 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D89431921B0E2F400A11DA1 /* PresentationViewController.swift */; };
+		7801B3DC21B242F0001DD8D6 /* BackgroundMusic.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 7801B3DB21B242F0001DD8D6 /* BackgroundMusic.mp3 */; };
 		7813FE53219B8AB700FAF569 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE52219B8AB700FAF569 /* AppDelegate.swift */; };
 		7813FE55219B8AB700FAF569 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 7813FE54219B8AB700FAF569 /* art.scnassets */; };
 		7813FE57219B8AB700FAF569 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7813FE56219B8AB700FAF569 /* ViewController.swift */; };
@@ -50,6 +51,7 @@
 		2D89431521B0DB1900A11DA1 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2D89431621B0DB1900A11DA1 /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
 		2D89431921B0E2F400A11DA1 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
+		7801B3DB21B242F0001DD8D6 /* BackgroundMusic.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BackgroundMusic.mp3; sourceTree = "<group>"; };
 		7813FE4F219B8AB700FAF569 /* Pocket_Pet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pocket_Pet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7813FE52219B8AB700FAF569 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7813FE54219B8AB700FAF569 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				7813FE54219B8AB700FAF569 /* art.scnassets */,
 				7813FE58219B8AB700FAF569 /* Main.storyboard */,
 				7813FE5B219B8AB800FAF569 /* Assets.xcassets */,
+				7801B3DB21B242F0001DD8D6 /* BackgroundMusic.mp3 */,
 				7813FE5D219B8AB800FAF569 /* LaunchScreen.storyboard */,
 				7813FE60219B8AB800FAF569 /* Info.plist */,
 			);
@@ -256,6 +259,11 @@
 				TargetAttributes = {
 					7813FE4E219B8AB700FAF569 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					7813FE64219B8AB800FAF569 = {
 						CreatedOnToolsVersion = 10.1;
@@ -292,6 +300,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7801B3DC21B242F0001DD8D6 /* BackgroundMusic.mp3 in Resources */,
 				7813FE55219B8AB700FAF569 /* art.scnassets in Resources */,
 				2D89431821B0DB1900A11DA1 /* SettingViewController.xib in Resources */,
 				7813FE5F219B8AB800FAF569 /* LaunchScreen.storyboard in Resources */,
