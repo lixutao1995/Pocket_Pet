@@ -31,15 +31,6 @@
                         <constraint firstAttribute="width" constant="40" id="sjq-by-oqv"/>
                     </constraints>
                 </imageView>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="color" translatesAutoresizingMaskIntoConstraints="NO" id="pRL-iQ-DDr">
-                    <rect key="frame" x="40" y="104" width="40" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="JRp-iW-Qs8"/>
-                        <constraint firstAttribute="width" constant="40" id="X27-o5-7wo"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="esD-PQ-AiC"/>
-                        <constraint firstAttribute="height" constant="40" id="xoe-MR-pw1"/>
-                    </constraints>
-                </imageView>
                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="D7m-YY-2zj">
                     <rect key="frame" x="108" y="36" width="254" height="51"/>
                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -51,17 +42,6 @@
                         <action selector="sizeSlider:" destination="-1" eventType="valueChanged" id="dUo-AQ-FA0"/>
                     </connections>
                 </slider>
-                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Aee-gO-fBe">
-                    <rect key="frame" x="108" y="102" width="254" height="51"/>
-                    <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="250" id="AXY-Bw-C84"/>
-                        <constraint firstAttribute="height" constant="50" id="KJj-Hq-QEq"/>
-                    </constraints>
-                    <connections>
-                        <action selector="colorSlider:" destination="-1" eventType="valueChanged" id="cxy-ID-Wxc"/>
-                    </connections>
-                </slider>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -69,12 +49,8 @@
                 <constraint firstItem="e5l-Et-0R0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="8Ys-HV-Tak"/>
                 <constraint firstItem="D7m-YY-2zj" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="G2w-MJ-PVu"/>
                 <constraint firstItem="e5l-Et-0R0" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Hte-9v-tdx"/>
-                <constraint firstItem="Aee-gO-fBe" firstAttribute="top" secondItem="D7m-YY-2zj" secondAttribute="bottom" constant="16" id="JOK-le-0xd"/>
                 <constraint firstAttribute="bottom" secondItem="e5l-Et-0R0" secondAttribute="bottom" id="M4g-ER-gNY"/>
-                <constraint firstItem="pRL-iQ-DDr" firstAttribute="top" secondItem="H8T-iV-h16" secondAttribute="bottom" constant="20" id="ULg-iS-b5n"/>
-                <constraint firstItem="Aee-gO-fBe" firstAttribute="leading" secondItem="pRL-iQ-DDr" secondAttribute="trailing" constant="30" id="VM7-AT-U97"/>
                 <constraint firstItem="e5l-Et-0R0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Vc2-ZN-cyp"/>
-                <constraint firstItem="pRL-iQ-DDr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="40" id="aq8-BN-xbG"/>
                 <constraint firstItem="D7m-YY-2zj" firstAttribute="centerX" secondItem="e5l-Et-0R0" secondAttribute="centerX" id="bwG-L6-jNS"/>
                 <constraint firstItem="H8T-iV-h16" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="24" id="fvk-k5-hTf"/>
                 <constraint firstItem="D7m-YY-2zj" firstAttribute="leading" secondItem="H8T-iV-h16" secondAttribute="trailing" constant="30" id="moz-1C-USc"/>
@@ -84,7 +60,6 @@
         </view>
     </objects>
     <resources>
-        <image name="color" width="96" height="96"/>
         <image name="size" width="96" height="96"/>
     </resources>
 </document>
