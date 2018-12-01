@@ -175,10 +175,15 @@
                         <viewLayoutGuide key="safeArea" id="fQZ-KI-GVf"/>
                     </view>
                     <connections>
+                        <outlet property="foodButton" destination="u56-80-4jP" id="VHz-26-rUa"/>
+                        <outlet property="fullIcon" destination="qsr-5p-yLB" id="qfd-WK-G25"/>
                         <outlet property="fullnessBar" destination="Pdp-Hf-WRN" id="TNk-2f-NDc"/>
                         <outlet property="happinessBar" destination="Ait-wU-Wgp" id="Yjo-07-8ER"/>
+                        <outlet property="happyIcon" destination="Me8-ma-WZa" id="m6R-Ej-67m"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="settingButton" destination="qMN-In-JD8" id="NjH-K0-yP5"/>
                         <outlet property="surfaceButton" destination="lsZ-YW-DXg" id="iLH-Ip-JkF"/>
+                        <outlet property="textureButton" destination="2OI-R2-fhv" id="yO9-ma-vd0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>

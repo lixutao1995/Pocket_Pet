@@ -137,6 +137,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         happinessBar.color = UIColor(red: 234/255.0, green: 70/255.0, blue: 60/255.0, alpha: 1)
         fullnessBar.backgroundColor = UIColor(white: 0.9, alpha: 0.4)
         updateBars()
+        
+        hiddeOrShowButtons(petNotYetPlaced: true)
     }
     
     // preload all food node
@@ -156,10 +158,34 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         print("finish")
     }
     
+    var petNotYetPlaced: Bool = true {
+        didSet {
+            hiddeOrShowButtons(petNotYetPlaced: petNotYetPlaced)
+        }
+    }
+    
+    @IBOutlet var foodButton: UIButton!
+    @IBOutlet var textureButton: UIButton!
+    @IBOutlet var settingButton: UIButton!
+    @IBOutlet var fullIcon: UIImageView!
+    @IBOutlet var happyIcon: UIImageView!
+    
+    
+    private func hiddeOrShowButtons(petNotYetPlaced: Bool) {
+        happinessBar.isHidden = petNotYetPlaced
+        fullnessBar.isHidden = petNotYetPlaced
+        foodButton.isHidden = petNotYetPlaced
+        textureButton.isHidden = petNotYetPlaced
+        settingButton.isHidden = petNotYetPlaced
+        fullIcon.isHidden = petNotYetPlaced
+        happyIcon.isHidden = petNotYetPlaced
+        
+    }
+    
     // surface click function, when clicked, put pet, enable food generation
     @IBAction func SurfaceClicked(_ sender: Any) {
         //when clicked put a object on the plane
-        addPet()
+        petNotYetPlaced = addPet()
         foodGeneration = true
         
         // set all points to be invisible
@@ -429,10 +455,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
     
     //add object will be called when plane detected, put into currentPetAnchor
-    func addPet() {
+    func addPet() -> Bool {
         if petAnchors.count <= 0 {
             print("no available anchor or already have a pet located")
-            return
+            return true
         }
         
 //        DispatchQueue.global().async {
@@ -454,6 +480,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.planeVisualizationParam = 0
             print("locate one")
         }
+        return false
 //        }
     }
     
